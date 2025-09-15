@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Krishi Sakhi Register</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        height: 100vh;
+        background: url("images/modern-farm.jpg") no-repeat center center fixed;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .register-container {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 50px 60px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        width: 400px;
+        text-align: center;
+      }
+      .register-container h2 {
+        margin-bottom: 25px;
+        color: #333;
+        font-size: 28px;
+      }
+      .input-group {
+        position: relative;
+      }
+      input {
+        width: 100%;
+        padding: 14px;
+        margin: 12px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+      }
+      .voice-btn {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 18px;
+        color: #4caf50;
+      }
+      #showPass {
+        position: absolute;
+        right: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+      button {
+        width: 100%;
+        padding: 14px;
+        margin-top: 15px;
+        background: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      button:hover {
+        background: #121412;
+        transform: scale(1.02);
+      }
+      p {
+        margin-top: 15px;
+        font-size: 16px;
+      }
+      p button {
+        background: none;
+        color: #4caf50;
+        border: none;
+        cursor: pointer;
+        text-decoration: underline;
+        font-size: 16px;
+        padding: 0;
+      }
+      p button:hover {
+        color: white;
+        transform: scale(1.05);
+      }
+      #registerMsg {
+        color: red;
+        margin-top: 12px;
+      }
+      #popup {
+        display: none;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #4caf50;
+        color: white;
+        padding: 25px;
+        border-radius: 8px;
+        font-size: 16px;
+        z-index: 1000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="register-container">
+      <h2 data-en="Register" data-ml="രജിസ്റ്റർ ചെയ്യുക">Register</h2>
+
+      <div class="input-group">
+        <input
+          id="name"
+          placeholder="പേര് / Name"
+          data-en="Name"
+          data-ml="പേര് "
+          required
+        />
+        <span class="voice-btn">🎙️</span>
+      </div>
+
+      <div class="input-group">
+        <input
+          id="mobile"
+          placeholder="മൊബൈൽ നമ്പർ / Mobile Number"
+          data-en="Mobile Number"
+          data-ml="മൊബൈൽ നമ്പർ "
+          required
+        />
+        <span class="voice-btn">🎙️</span>
+      </div>
+
+      <div class="input-group">
+        <input
+          type="password"
+          id="password"
+          placeholder="പാസ്‌വേഡ് / Password"
+          data-en="Password"
+          data-ml="പാസ്‌വേഡ് "
+          required
+        />
+        <span id="showPass">👁️</span>
+        <span class="voice-btn">🎙️</span>
+      </div>
+
+      <button id="registerBtn" data-en="Register" data-ml="രജിസ്റ്റർ ചെയ്യുക">
+        Register
+      </button>
+      <p id="registerMsg"></p>
+      <p
+        data-en="Already have an account? "
+        data-ml="ഇതിനകം ഒരു അക്കൗണ്ട് ഉണ്ടോ?"
+      >
+        Already have an account?
+        <button id="goLogin" data-en="Login" data-ml="ലോഗിൻ">Login</button>
+      </p>
+    </div>
+
+    <div id="popup">Registration Successful!</div>
+
+    <script>
+      const backend = "http://127.0.0.1:5000";
+
+      document
+        .getElementById("registerBtn")
+        .addEventListener("click", async () => {
+          const name = document.getElementById("name").value;
+          const mobile = document.getElementById("mobile").value;
+          const password = document.getElementById("password").value;
+          const res = await fetch(`${backend}/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, mobile, password }),
+          });
+          const data = await res.json();
+          const popup = document.getElementById("popup");
+          if (data.message === "Registration successful") {
+            popup.style.display = "block";
+            setTimeout(() => {
+              popup.style.display = "none";
+              window.location = "login.html";
+            }, 2000);
+          } else {
+            document.getElementById("registerMsg").innerText = data.message;
+          }
+        });
+
+      document.getElementById("goLogin").addEventListener("click", () => {
+        window.location = "login.html";
+      });
+
+      // Password hover show
+      const passwordInput = document.getElementById("password");
+      const showPass = document.getElementById("showPass");
+      let isShown = false; // Track state
+      showPass.addEventListener("click", () => {
+        if (!isShown) {
+          passwordInput.type = "text";
+          isShown = true;
+        } else {
+          // Next click: hide password
+          passwordInput.type = "password";
+          isShown = false;
+        }
+      });
+
+      // Voice input
+      const voiceButtons = document.querySelectorAll(".voice-btn");
+      const inputFields = ["name", "mobile", "password"];
+      voiceButtons.forEach((btn, index) => {
+        btn.addEventListener("click", () => {
+          const recognition = new (window.SpeechRecognition ||
+            window.webkitSpeechRecognition)();
+          recognition.lang = "ml-IN"; // Malayalam + English
+          recognition.interimResults = false;
+          recognition.maxAlternatives = 1;
+          recognition.start();
+          recognition.onresult = (event) => {
+            const speechResult = event.results[0][0].transcript;
+            document.getElementById(inputFields[index]).value = speechResult;
+          };
+          recognition.onerror = (event) => {
+            alert("Error: " + event.error);
+          };
+        });
+      });
+
+      const elements = document.querySelectorAll("[data-en]");
+
+      window.addEventListener("DOMContentLoaded", () => {
+        const isMalayalam = localStorage.getItem("lang") === "ml";
+
+        elements.forEach((el) => {
+          const text = isMalayalam ? el.dataset.ml : el.dataset.en;
+
+          if (el.tagName === "INPUT") {
+            el.placeholder = text;
+          } else if (el.tagName === "BUTTON") {
+            el.textContent = text;
+          } else {
+            // Only update the first text node of the element
+            const firstTextNode = Array.from(el.childNodes).find(
+              (node) => node.nodeType === Node.TEXT_NODE
+            );
+            if (firstTextNode) {
+              firstTextNode.textContent = text + " "; // Keep space before button
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

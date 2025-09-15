@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Krishi Sakhi Login</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        height: 100vh;
+        background: url("images/modern-farm.jpg") no-repeat center center fixed;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .login-container {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 50px 60px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        width: 400px;
+        text-align: center;
+        padding: 100px;
+      }
+
+      .login-container h2 {
+        margin-bottom: 25px;
+        color: #333;
+        font-size: 28px;
+      }
+
+      .input-group {
+        position: relative;
+      }
+
+      input {
+        width: 100%;
+        padding: 14px;
+        margin: 12px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+      }
+
+      .voice-btn {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 18px;
+        color: #4caf50;
+      }
+
+      #showPass {
+        position: absolute;
+        right: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+
+      button {
+        width: 100%;
+        padding: 14px;
+        margin-top: 15px;
+        background: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.3s;
+      }
+
+      button:hover {
+        background: #121412;
+        transform: scale(1.02);
+      }
+
+      p {
+        margin-top: 15px;
+        font-size: 16px;
+      }
+      p button {
+        background: none;
+        color: #4caf50;
+        border: none;
+        cursor: pointer;
+        text-decoration: underline;
+        font-size: 16px;
+        padding: 0;
+      }
+
+      p button:hover {
+        color: white;
+        transform: scale(1.05);
+      }
+
+      #loginMsg {
+        color: red;
+        margin-top: 12px;
+      }
+      #popup {
+        display: none;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #4caf50;
+        color: white;
+        padding: 30px 60px;
+        border-radius: 8px;
+        font-size: 20px;
+        z-index: 1000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <h2 data-en="Login" data-ml="ലോഗിൻ">Login</h2>
+
+      <div class="input-group">
+        <input
+          id="loginMobile"
+          placeholder="മൊബൈൽ നമ്പർ / Mobile Number"
+          data-en="MobileNumber"
+          data-ml="മൊബൈൽ നമ്പർ"
+          required
+        />
+        <span class="voice-btn">🎙️</span>
+      </div>
+
+      <div class="input-group">
+        <input
+          type="password"
+          id="loginPassword"
+          placeholder="പാസ്‌വേഡ് / Password"
+          data-en="Password"
+          data-ml="പാസ്‌വേഡ്"
+          required
+        />
+        <span id="showPass">👁️</span>
+        <span class="voice-btn">🎙️</span>
+      </div>
+
+      <button id="loginBtn" data-en="Login" data-ml="ലോഗിൻ">Login</button>
+      <p id="loginMsg"></p>
+      <p data-en="Don't have an account?" data-ml="അക്കൗണ്ട് ഇല്ലേ?">
+        Don't have an account?
+        <button id="goRegister" data-en="Register" data-ml="രജിസ്റ്റർ ചെയ്യുക">
+          Register
+        </button>
+      </p>
+    </div>
+
+    <div id="popup">Login Successful!</div>
+
+    <script>
+      const backend = "http://127.0.0.1:5000";
+
+      const elements = document.querySelectorAll("[data-en]");
+
+      window.addEventListener("DOMContentLoaded", () => {
+        const isMalayalam = localStorage.getItem("lang") === "ml";
+
+        elements.forEach((el) => {
+          const text = isMalayalam ? el.dataset.ml : el.dataset.en;
+
+          if (el.tagName === "INPUT") {
+            el.placeholder = text;
+          } else if (el.tagName === "BUTTON") {
+            el.textContent = text;
+          } else {
+            // Only update the first text node of the element
+            const firstTextNode = Array.from(el.childNodes).find(
+              (node) => node.nodeType === Node.TEXT_NODE
+            );
+            if (firstTextNode) {
+              firstTextNode.textContent = text + " "; // Keep space before button
+            }
+          }
+        });
+      });
+
+      // Login
+      document
+        .getElementById("loginBtn")
+        .addEventListener("click", async () => {
+          const mobile = document.getElementById("loginMobile").value;
+          const password = document.getElementById("loginPassword").value;
+          const res = await fetch(`${backend}/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ mobile, password }),
+          });
+
+          const data = await res.json();
+          const popup = document.getElementById("popup");
+
+          if (data.message === "Login successful") {
+            popup.style.display = "block";
+            sessionStorage.setItem("isLoggedIn", "true");
+            sessionStorage.setItem("currentUser", mobile);
+            window.location = "index.html";
+          } else {
+            document.getElementById("loginMsg").innerText = data.message;
+          }
+        });
+
+      // Go register
+      document.getElementById("goRegister").addEventListener("click", () => {
+        window.location = "register.html";
+      });
+
+      // Password hover show
+      const passwordInput = document.getElementById("loginPassword");
+      const showPass = document.getElementById("showPass");
+      let isShown = false; // Track state
+      showPass.addEventListener("click", () => {
+        if (!isShown) {
+          passwordInput.type = "text";
+          isShown = true;
+        } else {
+          // Next click: hide password
+          passwordInput.type = "password";
+          isShown = false;
+        }
+      });
+
+      // Voice recognition
+      const voiceButtons = document.querySelectorAll(".voice-btn");
+      const inputFields = ["loginMobile", "loginPassword"];
+      voiceButtons.forEach((btn, index) => {
+        btn.addEventListener("click", () => {
+          const recognition = new (window.SpeechRecognition ||
+            window.webkitSpeechRecognition)();
+          recognition.lang = "ml-IN"; // Malayalam + English works
+          recognition.start();
+          recognition.onresult = (event) => {
+            document.getElementById(inputFields[index]).value =
+              event.results[0][0].transcript;
+          };
+          recognition.onerror = (event) => {
+            alert("Error: " + event.error);
+          };
+        });
+      });
+    </script>
+  </body>
+</html>

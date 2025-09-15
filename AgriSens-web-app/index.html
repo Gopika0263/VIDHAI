@@ -1,425 +1,872 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AgriSens</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    />
-  </head>
 
-  <body>
-    <!-- navbar sections starts  -->
-    <header class="header">
-      <div class="logo">
-        <h1>AgriSens</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgriSens</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <style>
+
+    /* Profile Table */
+.profile-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+}
+
+.profile-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Buttons Container */
+.profile-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* Small Buttons */
+.small-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  color: white;
+}
+
+.small-btn:hover {
+  opacity: 0.85;
+}
+
+#editProfile {
+  background-color: #4caf50; /* green */
+}
+
+.logout-btn {
+  background-color: #f44336; /* red */
+}
+
+    /* Profile Popup */
+    
+    /* Centered Toast Popup */
+#profilePopup {
+  position: fixed;
+  top: 15%; /* higher than modal */
+  left: 50%;
+  transform: translateX(-50%); /* only horizontal center */
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 16px;
+  color: white;
+  z-index: 99999; /* higher than modal */
+  display: none;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  opacity: 0;
+}
+
+
+#profilePopup.show {
+  display: block;
+  animation: fadeInOut 2.5s forwards;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, -60%); }
+  10% { opacity: 1; transform: translate(-50%, -50%); }
+  90% { opacity: 1; transform: translate(-50%, -50%); }
+  100% { opacity: 0; transform: translate(-50%, -40%); }
+}
+
+
+  .profile-btn {
+  display: none;
+  font-size: 20px;
+  background: #f0f0f0;     /* circle background color */
+  border: 2px solid #4caf50; /* green round border */
+  border-radius: 50%;       /* makes it perfectly round */
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 42px;  
+  box-shadow: 0 0 5px rgba(0,0,0,0.3); /* smooth outer glow */
+  transition: 0.3s;
+}
+
+.profile-btn:hover {
+  background: #e8f5e9;  /* light green hover */
+  border-color: #2e7d32; /* darker green hover border */
+}
+
+
+    .profile-btn img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    /* Modal styles */
+    .modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center; /* vertical + horizontal centering */
+  z-index: 9999;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 15px;
+  width: 600px;
+  max-width: 90%;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  margin: auto; /* ensures perfect center */
+}
+
+
+    .modal-content h2 {
+      margin-bottom: 10px;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    .modal-content .input-group {
+      margin-bottom: 15px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-content input {
+      flex: 1;
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .modal-content .voice-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 22px;
+      cursor: pointer;
+      color: red;
+    }
+
+    .modal-content button {
+      width: 100%;
+      padding: 14px;
+      background: #4caf50;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .modal-content button:hover {
+      background: #7dd681;
+    }
+/* Make Smart Recommendations modal almost full screen */
+#smartRecModal .modal-content {
+  width: 90vw;             /* almost full width of viewport */
+  max-width: 95vw;
+  height: 90vh;            /* almost full height */
+  max-height: 95vh;
+  padding: 40px 50px;
+  border-radius: 15px;
+  overflow-y: auto;        /* allow scrolling if content exceeds height */
+  box-sizing: border-box;
+  overflow-x: hiddenv;
+  top:100px;
+}
+
+/* Make input fields bigger and more spaced */
+#smartRecModal input {
+  width: 100%;             /* full width inside modal */
+  padding: 18px;
+  font-size: 18px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+/* Make button bigger and full-width */
+#smartRecModal button {
+  width: 100%;
+  padding: 18px;
+  font-size: 20px;
+  border-radius: 10px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+/* Results modal bigger and easier to read */
+#keResultModal {
+  width: 90vw;
+  max-width: 95vw;
+  height: 90vh;
+  max-height: 95vh;
+  margin: auto;
+  padding: 30px 40px;
+  font-size: 18px;
+  line-height: 1.8;
+  overflow-y: auto;
+  border-radius: 15px;
+  box-sizing: border-box;
+}
+
+#keResultModal h3, #keResultModal h4 {
+  font-size: 24px;        /* bigger headings */
+  margin-bottom: 15px;
+}
+
+#keResultModal ul li {
+  margin-bottom: 10px;    /* more spacing between list items */
+}
+
+/* Optional: Dark overlay covers full page */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 1000;
+}
+
+  </style>
+</head>
+
+<body>
+  <!-- Profile Popup -->
+  <div id="profilePopup"></div>
+
+  <!-- navbar sections starts  -->
+  <header class="header">
+    <div class="logo">
+      <h1>VIDHAI</h1>
+    </div>
+
+    <nav class="navbar">
+      <a href="#home" class="nav-link" data-en="Home" data-ml="ഹോം">Home</a>
+      <a href="#features" class="nav-link" data-en="Features" data-ml="ഫീച്ചറുകൾ">Features</a>
+      <a href="#about" class="nav-link" data-en="About" data-ml="ഞങ്ങളെക്കുറിച്ച്">About</a>
+      <a href="#footer" class="nav-link" data-en="Contact" data-ml="ബന്ധപ്പെടുക">Contact</a>
+      <a href="explore/index.html" class="btn" data-en="EXPLORE NOW" data-ml="ഇപ്പോൾ പര്യവേക്ഷണം ചെയ്യുക">EXPLORE NOW</a>
+      <button id="translate-btn" class="btn" data-en="Translate" data-ml="വിവർത്തനം ചെയ്യുക">TRANSLATE</button>
+      <a href="login.html" class="btn login-btn" id="loginBtn" data-en="Login" data-ml="ലോഗിൻ">Login</a>
+      <button class="profile-btn" id="profileBtn">👤</button>
+    </nav>
+
+    <div class="fas fa-bars" id="menu-btn"></div>
+  </header>
+  <!-- navbar sections ends  -->
+    
+<!-- home section starts  -->
+
+  <section class="home" id="home">
+    <div class="video-container">
+      <video autoplay muted loop playsinline>
+        <source src="videos/homepage.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <div class="overlay-content">
+      <a href="guide/index.html" class="home-btn" target="_blank" data-en="Smart Farming guide"
+        data-ml="സ്മാർട്ട് ഫാമിംഗ് ഗൈഡ്">Smart Farming Guide</a>
+    </div>
+  </section>
+
+  <!-- home section ends -->
+
+
+
+  <!-- features sectin starts  -->
+
+  <section class="features" id="features">
+    <div class="heading">
+      <h1 data-en="Features" data-ml="സവിശേഷതകൾ">Features</h1>
+      <p data-en="Vidhai supports farmers throughout the crop cycle with smart, localized tools. It enables farm and farmer profiling (location, land size, crop, soil type, irrigation) and provides a conversational interface in Malayalam via voice or text. Farmers can track activities like sowing, irrigation, and pest issues, while the app’s AI-powered advisory offers timely, contextual guidance." data-ml="വിള ചക്രത്തിലുടനീളം വിദ്ഹായ് കർഷകരെ സ്മാർട്ട്, പ്രാദേശിക ഉപകരണങ്ങൾ ഉപയോഗിച്ച് പിന്തുണയ്ക്കുന്നു. ഇത് കൃഷിയിടത്തിന്റെയും കർഷകന്റെയും വിവരങ്ങൾ (സ്ഥലം, ഭൂമിയുടെ വലുപ്പം, വിള, മണ്ണിന്റെ തരം, ജലസേചനം) ശേഖരിക്കാൻ സഹായിക്കുന്നു. കൂടാതെ, ശബ്ദത്തിലൂടെയോ ടെക്‌സ്‌റ്റിലൂടെയോ മലയാളത്തിൽ സംസാരിക്കുന്ന ഒരു ഇന്റർഫേസ് നൽകുന്നു. വിത്ത് വിതയ്ക്കൽ, ജലസേചനം, കീട പ്രശ്നങ്ങൾ പോലുള്ള പ്രവർത്തനങ്ങൾ കർഷകർക്ക് ട്രാക്ക് ചെയ്യാൻ കഴിയും. ആപ്പിന്റെ AI-പവർഡ് ഉപദേശം സമയബന്ധിതവും സന്ദർഭോചിതവുമായ മാർഗ്ഗനിർദ്ദേശങ്ങൾ നൽകുന്നു.">
+        Vidhai supports farmers throughout the crop cycle with smart, localized tools. It enables farm and farmer
+        profiling (location, land size, crop, soil type, irrigation) and provides a conversational interface in
+        Malayalam via voice or text. Farmers can track activities like sowing, irrigation, and pest issues, while the
+        app’s AI-powered advisory offers timely, contextual guidance.
+      </p>
+    </div>
+
+    <div class="button-container0">
+      <a href="https://crop-recomm.streamlit.app/" class="buttonn active" data-en="Crop Recommendations" data-ml="വിള ശുപാർശകൾ">Crop Recommendations</a>
+      <a href="https://agrisens-crop-disease-pred.streamlit.app/" class="buttonn" data-en="Identify Plant Diseases" data-ml="വിള രോഗങ്ങൾ തിരിച്ചറിയുക">Identify Plant Diseases</a>
+      <a href="weather-forecast/index.html" class="buttonn" data-en="Today's Weather Forecast" data-ml="ഇന്നത്തെ കാലാവസ്ഥാ പ്രവചനം">Today's Weather Forecast</a>
+      <a href="developing-phase/index.html" class="buttonn" data-en="Fertilizer recommendation" data-ml="വള ശുപാർശ">Fertilizer recommendation</a>
+      <a href="guide/index.html" class="buttonn" data-en="Smart Farming Guidance" data-ml="സ്മാർട്ട് ഫാമിംഗ് മാർഗ്ഗനിർദ്ദേശം">Smart Farming Guidance</a>
+      <a href="#" id="smartRecBtn" class="buttonn" data-en="Smart Recommendations" data-ml="സ്മാർട്ട് ശുപാർശകൾ">Smart Recommendations</a>
+
+    </div>
+
+
+  <div id="smartRecModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close-btn" id="closeSmartRec">&times;</span>
+    <h2 data-en="Smart Recommendations" data-ml="സ്മാർട്ട് ശുപാർശകൾ">Smart Recommendations</h2>
+    <div class="input-group">
+      <input type="text" id="keCropModal" placeholder="Crop (വിള)" data-en="Crop" data-ml="വിള" required />
+      <input type="text" id="keSoilModal" placeholder="Soil Type (മണ്ണ്)" data-en="Soil Type" data-ml="മണ്ണ്" required />
+      <input type="number" id="keTempModal" placeholder="Temperature (താപനില (°C))" data-en="Temperature" data-ml="താപനില (°C)" required />
+      <input type="number" id="keHumidityModal" placeholder="Humidity (ഈർപ്പം (%))" data-en="Humidity" data-ml="ഈർപ്പം (%)" required />
+    </div>
+    <button id="getKEModal" data-en="Get Recommendations"  data-ml="ശുപാർശകൾ നേടുക">Get Recommendations</button>
+    <div id="keResultModal" style="margin-top:15px;"></div>
+  </div>
+</div>
+
+
+
+    <div class="row">
+      <!-- 0 Tab  -->
+      <div class="image">
+        <img src="images/weather.jpg" alt="crop-planning" class="rounded-corner-image" />
       </div>
 
-      <nav class="navbar">
-        <a href="#home">Home</a>
-        <a href="#features">Features</a>
-        <a href="#about">About</a>
-        <a href="#footer">Contact</a>
-        <a href="explore/index.html" class="btn">EXPLORE NOW</a>
-      </nav>
-
-      <div class="fas fa-bars" id="menu-btn"></div>
-    </header>
-    <!-- navbar sections ends  -->
-
-    <!-- home section stars  -->
-
-    <section class="home" id="home">
       <div class="content">
-        <h1>YOUR SMART FARMING ASSISTANT</h1>
-        <p>Smart Crops, Smart Choices with AgriSens!</p>
+        <h1 data-en="weather Forecast" data-ml="കാലാവസ്ഥാ പ്രവചനം">weather Forecast</h1>
+        <p data-en="Plan your farming with precision using real-time weather insights on temperature, humidity, and more. Make smarter choices with our integrated crop prediction model, explore historical data, receive timely alerts, and access valuable learning resources." data-ml="താപനില, ഈർപ്പം, എന്നിവയെക്കുറിച്ചുള്ള തത്സമയ കാലാവസ്ഥാ വിവരങ്ങൾ ഉപയോഗിച്ച് നിങ്ങളുടെ കൃഷി കൃത്യതയോടെ ആസൂത്രണം ചെയ്യുക. ഞങ്ങളുടെ സംയോജിത വിള പ്രവചന മാതൃക ഉപയോഗിച്ച് മികച്ച തിരഞ്ഞെടുപ്പുകൾ നടത്തുക, ചരിത്രപരമായ വിവരങ്ങൾ പരിശോധിക്കുക, സമയബന്ധിതമായി അലേർട്ടുകൾ നേടുക, കൂടാതെ വിലയേറിയ പഠന വിഭവങ്ങൾ ആക്സസ് ചെയ്യുക.">
+          Plan your farming with precision using real-time weather insights on temperature, humidity, and more. Make
+          smarter choices with our integrated crop prediction model, explore historical data, receive timely alerts, and
+          access valuable learning resources.
+        </p>
 
-        <a href="guide/index.html" class="home-btn" target="_blank "
-          >Smart Farming guide</a
-        >
       </div>
+
+      <!-- 0 Tab  -->
+
+      <!-- 1 Tab  -->
 
       <div class="image">
-        <img class="image" src="images/amit-front2.jpg" alt="heading-image" />
+        <img src="images/crop-planning.jpg" alt="crop-planning" class="rounded-corner-image" />
+
       </div>
-    </section>
-
-    <!-- home section ends -->
-
-    <!-- features sectin starts  -->
-
-    <section class="features" id="features">
-      <div class="heading">
-        <h1>Features</h1>
-        <p>
-          AgriSens provides farmers with essential tools for smarter farming. It
-          offers personalized crop recommendations based on soil and climate,
-          helps identify plant diseases through image analysis, and provides
-          real-time weather forecasts. The app also includes features for crop
-          planning and guidance, ensuring optimal farming decisions for better
-          yields and healthier crops.
+      <div class="content">
+        <h1 data-en="Smart Crop Planning" data-ml="സ്മാർട്ട് വിള ആസൂത്രണം">Smart Crop Planning</h1>
+        <p data-en="Plan your crops better with the help of data. Vidhai suggests the right crops and best conditions for farming by checking soil, weather, and other important factors, helping you make smart and easy decisions." data-ml="വിവരങ്ങളുടെ സഹായത്തോടെ നിങ്ങളുടെ വിളകൾ നന്നായി ആസൂത്രണം ചെയ്യുക. മണ്ണ്, കാലാവസ്ഥ, മറ്റ് പ്രധാന ഘടകങ്ങൾ എന്നിവ പരിശോധിച്ച് കൃഷി ചെയ്യുന്നതിനുള്ള ശരിയായ വിളകളും മികച്ച സാഹചര്യങ്ങളും വിദ്ഹായ് നിർദ്ദേശിക്കുന്നു, ഇത് നിങ്ങൾക്ക് മികച്ചതും എളുപ്പമുള്ളതുമായ തീരുമാനങ്ങൾ എടുക്കാൻ സഹായിക്കുന്നു.">
+          Plan your crops better with the help of data. Vidhai suggests the right crops and best conditions for farming
+          by checking soil, weather, and other important factors, helping you make smart and easy decisions.
         </p>
       </div>
 
-      <div class="button-container0">
-        <a href="https://crop-recomm.streamlit.app/" class="buttonn active"
-          >Crop Recommendations</a
-        >
-        <a
-          href="https://agrisens-crop-disease-pred.streamlit.app/"
-          class="buttonn"
-          >Identify Plant Diseases</a
-        >
-        <a href="weather-forecast/index.html" class="buttonn"
-          >Today's Weather Forecast</a
-        >
-        <a href="developing-phase/index.html" class="buttonn"
-          >Fertilizer recommendation</a
-        >
-        <a href="guide/index.html" class="buttonn">Smart Farming Guidance</a>
+      <!-- 1 Tab  -->
+
+      <!-- 2 Tab  -->
+      <div class="image">
+        <img src="images/desease-dect.jpeg" alt="Disease-Detection" class="rounded-corner-image" />
       </div>
 
-      <div class="row">
-        <!-- 0 Tab  -->
-        <div class="image">
-          <img
-            src="images/weather.jpg"
-            alt="crop-planning"
-            class="rounded-corner-image"
-          />
-        </div>
+      <div class="content">
+        <h1 data-en="Plant Disease Identification" data-ml="വിള രോഗങ്ങൾ തിരിച്ചറിയൽ">Plant Disease Identification</h1>
+        <p data-en="Farmers can upload a photo of their crop, and Vidhai will quickly detect and identify plant diseases. This helps in taking the right action on time, improving crop health and farming efficiency" data-ml="കർഷകർക്ക് അവരുടെ വിളയുടെ ഫോട്ടോ അപ്‌ലോഡ് ചെയ്യാൻ കഴിയും, വിദ്ഹായ് ഉടൻ തന്നെ വിള രോഗങ്ങൾ കണ്ടെത്തുകയും തിരിച്ചറിയുകയും ചെയ്യും. ഇത് കൃത്യസമയത്ത് ശരിയായ നടപടികൾ സ്വീകരിക്കാൻ സഹായിക്കുന്നു, വിളയുടെ ആരോഗ്യം മെച്ചപ്പെടുത്തുകയും കൃഷി കാര്യക്ഷമത വർദ്ധിപ്പിക്കുകയും ചെയ്യുന്നു.">
+          Farmers can upload a photo of their crop, and Vidhai will quickly detect and identify plant diseases. This
+          helps in taking the right action on time, improving crop health and farming efficiency
+        </p>
 
-        <div class="content">
-          <h1>weather Forecast</h1>
-          <p>
-            Plan Your Farming With Precision! Check Real-Time Weather Insights
-            On Temperature, Humidity, And More. Integrated With Our
-            Crop-Prediction Model For Optimal Decisions. Explore Historical
-            Data, Get Alerts, And Access Educational Resources.
-          </p>
-          <a href="#" class="all-btn">more info</a>
-        </div>
-
-        <!-- 0 Tab  -->
-
-        <!-- 1 Tab  -->
-
-        <div class="content">
-          <h1>Smart Crop Planning</h1>
-          <p>
-            Harness the power of data analysis to predict crop suitability,
-            providing insights into optimal cultivation conditions. AgriSens
-            optimizes farming decisions based on comprehensive factors like soil
-            quality, weather, and more.
-          </p>
-          <a href="#" class="all-btn">more info</a>
-        </div>
-
-        <div class="image">
-          <img
-            src="images/crop-planning.jpg"
-            alt="crop-planning"
-            class="rounded-corner-image"
-          />
-        </div>
-
-        <!-- 1 Tab  -->
-
-        <!-- 2 Tab  -->
-        <div class="image">
-          <img
-            src="images/desease-dect.jpeg"
-            alt="Disease-Detection"
-            class="rounded-corner-image"
-          />
-        </div>
-
-        <div class="content">
-          <h1>Plant Disease Identification</h1>
-          <p>
-            Assist farmers in detecting plant diseases by enabling image
-            uploads, utilizing this analysis for prompt and precise
-            identification, enhancing farming efficiency and crop management.
-          </p>
-          <a href="#" class="all-btn">more info</a>
-        </div>
-
-        <!-- 2 Tab  -->
-
-        <!-- 3 Tab  -->
-
-        <div class="content">
-          <h1>Smart Farming, Simple Guidance</h1>
-          <p>
-            Smart Crop Guide offers a simple, step-by-step plan for growing
-            crops. It provides expert planting tips, tracks growth stages, and
-            sends watering reminders. The app also gives pest control advice,
-            harvest timing, weather updates, and fertilizer recommendations to
-            ensure healthy crops.
-          </p>
-
-          <a href="#" class="all-btn">more info</a>
-        </div>
-
-        <div class="image">
-          <img
-            src="images/guide.png"
-            alt="ranked-recommendations"
-            class="rounded-corner-image"
-          />
-        </div>
-
-        <!-- 3 Tab  -->
-
-        <!-- 4 Tab  -->
-
-        <div class="image">
-          <img
-            src="images/modern-farm.jpg"
-            alt="modern-farms"
-            class="rounded-corner-image"
-          />
-        </div>
-
-        <div class="content">
-          <h1>Innovations for Modern Farms</h1>
-          <p>
-            Smart Crop Tech, Precision Farming, and Customizable Solutions for
-            Sustainable and Efficient Agriculture!
-          </p>
-          <a href="#" class="all-btn">more info</a>
-        </div>
-
-        <!-- 4 Tab  -->
-
-        <!-- 5 Tab  -->
-
-        <div class="content">
-          <h1>User-Friendly Interface</h1>
-          <p>
-            Our application features a user-friendly interface designed for
-            farmers of all technological backgrounds. With simple inputs like
-            location and crop selection, users can effortlessly access detailed
-            information on crop suitability and recommended planting schedules.
-          </p>
-          <a href="#" class="all-btn">more info</a>
-        </div>
-
-        <div class="image">
-          <img
-            src="images/User-Friendly.jpeg"
-            alt="user-friendly"
-            class="rounded-corner-image"
-          />
-        </div>
-
-        <!-- 5 Tab  -->
-      </div>
-    </section>
-
-    <!-- features sectin ends -->
-
-    <!-- about section starts  -->
-
-    <section class="about" id="about">
-      <div class="heading">
-        <h1>Team Members</h1>
-        <p>Introduce the talented individuals shaping the AgriSens project.</p>
       </div>
 
-      <div class="box-container">
-        <div class="box">
-          <img src="images/ravikant.png" alt="member-1" />
+      <!-- 2 Tab  -->
 
-          <h3>Ravikant Diwakar</h3>
-          <p>
-            B.Tech | CSE <br />
-            KIIT UNIVERSITY
-          </p>
-          <a href="https://instagram.com/0000032c" target="_blank">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a href="http://linkedin.com/in/ravikantdiwakar" target="_blank">
-            <i class="fab fa-linkedin"></i>
-          </a>
-          <a href="https://github.com/ravikant-diwakar" target="_blank">
-            <i class="fab fa-github"></i>
-          </a>
-        </div>
+      <!-- 3 Tab  -->
 
-        <div class="box">
-          <img src="images/golu.jpg" alt="member-2" />
-
-          <h3>Gaurav Kumar</h3>
-          <p>
-            B.Tech | CSE <br />
-            KIIT UNIVERSITY
-          </p>
-          <a
-            href="https://instagram.com/gaurav_kumar__09?igshid=MzNlNGNkZWQ4Mg=="
-            target="_blank"
-          >
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a
-            href="https://www.linkedin.com/in/gaurav-kumar-90b9b2264"
-            target="_blank"
-          >
-            <i class="fab fa-linkedin"></i>
-          </a>
-          <a href="https://github.com/Gauravkumar1741" target="_blank">
-            <i class="fab fa-github"></i>
-          </a>
-        </div>
-
-        <div class="box">
-          <img src="images/amit.jpg" alt="member-3" />
-          <h3>Amit <br />Kumar</h3>
-          <p>
-            B.Tech | CSE <br />
-            KIIT UNIVERSITY
-          </p>
-          <a
-            href="https://www.instagram.com/sunny_ii_v04?igsh=eW52dmI5aDExbGd0"
-            target="_blank"
-          >
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a href="https://www.linkedin.com/in/amitkashyap2504" target="_blank">
-            <i class="fab fa-linkedin"></i>
-          </a>
-          <a href="https://github.com/AMITKUMAR7970" target="_blank">
-            <i class="fab fa-github"></i>
-          </a>
-        </div>
-
-        <!-- </div> -->
-
-        <!-- <div class="box-container"> -->
-
-        <div class="box">
-          <img src="images/jaya.jpg" alt="member-4" />
-
-          <h3>Jaya Vashistha</h3>
-          <p>
-            B.Tech | CSE <br />
-            KIIT UNIVERSITY
-          </p>
-          <a
-            href="https://www.instagram.com/_jaya_vashisth9?igsh=Zmt3eGdmb2o1cGJl"
-            target="_blank"
-          >
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a
-            href="https://www.linkedin.com/in/jaya-vashistha9?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-            target="_blank"
-          >
-            <i class="fab fa-linkedin"></i>
-          </a>
-          <a href="#" target="_blank">
-            <i class="fab fa-github"></i>
-          </a>
-        </div>
-
-        <div class="box">
-          <img src="images/aditya.jpg" alt="member-5" />
-          <h3>Aditya Chaudhary</h3>
-          <p>
-            B.Tech | CSE <br />
-            KIIT UNIVERSITY
-          </p>
-          <a
-            href="https://www.instagram.com/adi._.harsh?igsh=MWF5OTJsbnA0MnJiZw=="
-            target="_blank"
-          >
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a
-            href="https://www.linkedin.com/in/aditya-choudhary-03644a23b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-            target="_blank"
-          >
-            <i class="fab fa-linkedin"></i>
-          </a>
-          <a href="#" target="_blank">
-            <i class="fab fa-github"></i>
-          </a>
-        </div>
-
-        <div class="box">
-          <img src="images/abhijit.jpg" alt="member-6" />
-          <h3>Abhijit Kumar</h3>
-          <p>
-            B.Tech | CSE <br />
-            KIIT UNIVERSITY
-          </p>
-          <a href="https://www.instagram.com/" target="_blank">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a
-            href="https://www.linkedin.com/in/abhijit-kumar-b2422023a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-            target="_blank"
-          >
-            <i class="fab fa-linkedin"></i>
-          </a>
-          <a href="#" target="_blank">
-            <i class="fab fa-github"></i>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- about section ends -->
-
-    <!-- footer section starts  -->
-
-    <section class="footer" id="footer">
-      <div class="box-container">
-        <div class="box">
-          <h3>quick links</h3>
-          <a href="#home"><i class="fas fa-chevron-right"></i>home</a>
-          <a href="#features"><i class="fas fa-chevron-right"></i>features</a>
-          <a href="#about"><i class="fas fa-chevron-right"></i>about</a>
-        </div>
-
-        <div class="box">
-          <h3>extra links</h3>
-          <a href="#"><i class="fas fa-chevron-right"></i>ask questions</a>
-          <a href="#"><i class="fas fa-chevron-right"></i>terms of use</a>
-          <a href="#"><i class="fas fa-chevron-right"></i>privacy policy</a>
-        </div>
-
-        <div class="box">
-          <h3>Helpful Resources</h3>
-          <a href="#"><i class="fas fa-chevron-right"></i> FAQs</a>
-          <a href="#"><i class="fas fa-chevron-right"></i> User Guides</a>
-          <a href="#"><i class="fas fa-chevron-right"></i> Support Center</a>
-        </div>
-
-        <div class="box">
-          <h3>Stay Connected</h3>
-          <a href="#"><i class="fas fa-chevron-right"></i> Future Scope</a>
-          <a href="#"><i class="fas fa-chevron-right"></i> Community Forum</a>
-          <a href="#"><i class="fas fa-chevron-right"></i> Newsletter</a>
-        </div>
+      <div class="image">
+        <img src="images/guide.png" alt="ranked-recommendations" class="rounded-corner-image" />
       </div>
 
-      <div class="credit">
-        © Copyright – All Rights Reserved
-        <a href="" target="_blank"><span>Team AgriSens</span> </a>
+      <div class="content">
+        <h1 data-en="Smart Farming, Simple Guidance" data-ml="സ്മാർട്ട് കൃഷി, ലളിതമായ മാർഗ്ഗനിർദ്ദേശം">Smart Farming, Simple Guidance</h1>
+        <p data-en="Smart Crop Guide gives farmers an easy step-by-step plan for growing crops. It shares planting tips, tracks crop growth, reminds about watering, and gives advice on pest control, harvest time, weather, and fertilizers—helping farmers keep their crops healthy." data-ml="സ്മാർട്ട് ക്രോപ് ഗൈഡ് കർഷകർക്ക് വിളകൾ വളർത്തുന്നതിനുള്ള എളുപ്പമുള്ള ഘട്ടം ഘട്ടമായുള്ള പദ്ധതി നൽകുന്നു. ഇത് നടീൽ നുറുങ്ങുകൾ പങ്കിടുന്നു, വിള വളർച്ച ട്രാക്ക് ചെയ്യുന്നു, നനയ്ക്കുന്നതിനെക്കുറിച്ച് ഓർമ്മിപ്പിക്കുന്നു, കൂടാതെ കീട നിയന്ത്രണം, വിളവെടുപ്പ് സമയം, കാലാവസ്ഥ, വളങ്ങൾ എന്നിവയെക്കുറിച്ച് ഉപദേശം നൽകുന്നു - കർഷകരെ അവരുടെ വിളകൾ ആരോഗ്യത്തോടെ നിലനിർത്താൻ സഹായിക്കുന്നു.">
+          Smart Crop Guide gives farmers an easy step-by-step plan for growing crops. It shares planting tips, tracks
+          crop growth, reminds about watering, and gives advice on pest control, harvest time, weather, and
+          fertilizers—helping farmers keep their crops healthy.
+        </p>
       </div>
-    </section>
 
-    <!-- footer section ends -->
-      <script src="script.js"></script>
-    </chat>
+      <!-- 3 Tab  -->
 
-    <!--Chat-bot-->
+      <!-- 4 Tab  -->
 
-    <script src="js/main.js"></script>
-  </body>
+<!--       <div class="image">
+        <img src="images/modern-farm.jpg" alt="modern-farms" class="rounded-corner-image" />
+      </div> -->
+
+      
+
+      <!-- 4 Tab  -->
+
+  </section>
+
+  <!-- features sectin ends -->
+   <!-- Profile Modal -->
+  <!-- Profile Modal -->
+
+<!-- Profile Modal -->
+ <div id="profileModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close-btn" id="closeModal">&times;</span>
+    
+    <div id="profileFormSection">
+      <h2  data-en="Farmer & Farm Profiling"  data-ml="കർഷക & കൃഷി പ്രൊഫൈലിംഗ്">Farmer & Farm Profiling</h2>
+
+      <div class="input-group">
+        <input type="text" id="location" placeholder=" സ്ഥലം/Location" required />
+        <span class="voice-btn">🎙️</span>
+      </div>
+      <div class="input-group">
+        <input type="text" id="landSize" placeholder="ഭൂമി വലുപ്പം / Land Size" required />
+        <span class="voice-btn">🎙️</span>
+      </div>
+      <div class="input-group">
+        <input type="text" id="crop" placeholder="വിള / Crop" required />
+        <span class="voice-btn">🎙️</span>
+      </div>
+      <div class="input-group">
+        <input type="text" id="soil" placeholder="മണ്ണിന്റെ തരം / Soil Type" required />
+        <span class="voice-btn">🎙️</span>
+      </div>
+      <div class="input-group">
+        <input type="text" id="irrigation" placeholder="ജലസേചനം / Irrigation" required />
+        <span class="voice-btn">🎙️</span>
+      </div>
+
+      <button id="saveProfile" data-en="Save" data-ml="സംരക്ഷിക്കുക">Save</button>
+    </div>
+
+    <!-- Profile display section after saved -->
+    <div id="profileDisplaySection" style="display:none;">
+  <h2 data-en="Your Profile" data-ml="നിങ്ങളുടെ പ്രൊഫൈൽ">Your Profile</h2>
+  <table class="profile-table">
+    <tr>
+      <td><strong data-en="Location:" data-ml="സ്ഥലം:">Location:</strong></td>
+      <td id="dispLocation"></td>
+    </tr>
+    <tr>
+      <td><strong data-en="Land Size:" data-ml="ഭൂമി വലുപ്പം:">Land Size:</strong></td>
+      <td id="dispLandSize"></td>
+    </tr>
+    <tr>
+      <td><strong data-en="Crop:" data-ml="വിള:">Crop:</strong></td>
+      <td id="dispCrop"></td>
+    </tr>
+    <tr>
+      <td><strong data-en="Soil Type:" data-ml="മണ്ണിന്റെ തരം:">Soil Type:</strong></td>
+      <td id="dispSoil"></td>
+    </tr>
+    <tr>
+      <td><strong data-en="Irrigation:" data-ml="ജലസേചനം:">Irrigation:</strong></td>
+      <td id="dispIrrigation"></td>
+    </tr>
+  </table>
+
+  <div class="profile-buttons">
+    <button id="editProfile" class="small-btn" data-en="Edit" data-ml="എഡിറ്റ് ചെയ്യുക">Edit</button>
+    <button id="logoutProfile" class="small-btn logout-btn" style="background-color: #de2518;" data-ml="പുറത്തുകടക്കുക" data-en="Logout">Logout</button>
+  </div>
+</div>
+</div>
+</div>
+
+
+  
+
+    <!-- Popup message inside modal -->
+
+
+
+
+  <!-- about section starts  -->
+
+  <!-- about section starts  -->
+  <section class="about" id="about">
+    <div class="row">
+      <div class="image">
+        <img src="images/about-pic.jpg" alt="About VIDHAI" />
+      </div>
+
+      <div class="content">
+        <h1 data-en="About VIDHAI" data-ml="വിദ്ഹായ് പരിചയം">About VIDHAI</h1>
+        <p data-en="VIDHAI (Virtual Intelligent Digital Helper for Agricultural Innovation) is a digital platform created to transform farming in Kerala. It connects traditional farming practices with modern technology to solve the key challenges farmers face today."
+          data-ml="വിദ്ഹായ് (Virtual Intelligent Digital Helper for Agricultural Innovation) കേരളത്തിലെ കൃഷിയെ മാറ്റിമറിക്കാൻ സൃഷ്ടിച്ച ഒരു ഡിജിറ്റൽ പ്ലാറ്റ്ഫോമാണ്. ഇത് പരമ്പരാഗത കൃഷി പ്രാക്ടീസുകളെയും ആധുനിക സാങ്കേതികവിദ്യയെയും ബന്ധിപ്പിച്ച് കർഷകർ നേരിടുന്ന പ്രധാന പ്രശ്നങ്ങൾ പരിഹരിക്കുന്നു.">
+          VIDHAI (Virtual Intelligent Digital Helper for Agricultural Innovation) is a digital platform created to
+          transform farming in Kerala. It connects traditional farming practices with modern technology to solve the key
+          challenges farmers face today.
+        </p>
+
+        <h2 data-en="Core Objectives" data-ml="പ്രധാന ലക്ഷ്യങ്ങൾ">Core Objectives</h2>
+        <ul>
+          <li data-en="Smart Technology for Farmers: Easy-to-use digital tools to support Kerala’s farming community."
+            data-ml="കർഷകർക്ക് സ്മാർട്ട് സാങ്കേതികവിദ്യ: കേരളത്തിലെ കർഷക സമൂഹത്തെ പിന്തുണയ്ക്കുന്ന എളുപ്പത്തിൽ ഉപയോഗിക്കാൻ കഴിയുന്ന ഡിജിറ്റൽ ഉപകരണങ്ങൾ.">
+            <b>Smart Technology for Farmers:</b> Easy-to-use digital tools to support Kerala’s farming community.
+          </li>
+          <li
+            data-en="Data-Driven Support: Providing farmers and experts with clear, useful insights for better decisions."
+            data-ml="ഡാറ്റാ-ചാലിത പിന്തുണ: മികച്ച തീരുമാനങ്ങൾ എടുക്കാൻ കർഷകർക്കും വിദഗ്ധർക്കും വ്യക്തമാക്കിയ, പ്രയോജനപ്രദമായ洞കൾ നൽകുന്നു.">
+            <b>Data-Driven Support:</b> Providing farmers and experts with clear, useful insights for better decisions.
+          </li>
+          <li data-en="Sustainable Farming: Promoting eco-friendly and cost-effective farming practices."
+            data-ml="സുസ്ഥിര കൃഷി: പരിസ്ഥിതിയുമായി സൗഹൃദപരവും ചെലവു കുറഞ്ഞ കൃഷി രീതികൾ പ്രോത്സാഹിപ്പിക്കുന്നു.">
+            <b>Sustainable Farming:</b> Promoting eco-friendly and cost-effective farming practices.
+          </li>
+          <li
+            data-en="Voice & Chat Support: Farmers can use voice-to-text (microphone) for easy communication, and get instant help through our AI-powered chatbot."
+            data-ml="വോയ്‌സ് & ചാറ്റ് പിന്തുണ: എളുപ്പത്തിൽ ആശയവിനിമയം നടത്താൻ കർഷകർക്ക് വോയ്‌സ്-ടു-ടെക്സ്റ്റ് (മൈക്രോഫോൺ) ഉപയോഗിക്കാം, കൂടാതെ AI-പവർഡ് ചാറ്റ്ബോട്ട് വഴി ഉടൻ സഹായം ലഭിക്കുന്നു.">
+            <b>Voice & Chat Support:</b> Farmers can use voice-to-text (microphone) for easy communication, and get
+            instant help through our AI-powered chatbot.
+          </li>
+        </ul>
+
+        <h2 data-en="Our Mission" data-ml="ഞങ്ങളുടെ ദൗത്യം">Our Mission</h2>
+        <p data-en="To build a simple, farmer-friendly platform that brings together farmers, technology, and innovation — making agriculture in Kerala smarter, sustainable, and future-ready."
+          data-ml="കർഷകരെയും സാങ്കേതികവിദ്യയെയും നവീകരണത്തെയും ഒന്നിച്ച് ചേർക്കുന്ന ഒരു ലളിതവും കർഷക സുഹൃത്തും ആയ പ്ലാറ്റ്ഫോം നിർമ്മിക്കുക — കേരളത്തിലെ കൃഷിയെ കൂടുതൽ സ്മാർട്ട്, സുസ്ഥിരവും ഭാവിക്കു തയാറായതുമായത് ആക്കുന്നു.">
+          To build a simple, farmer-friendly platform that brings together farmers, technology, and innovation — making
+          agriculture in Kerala smarter, sustainable, and future-ready.
+        </p>
+      </div>
+    </div>
+  </section>
+  <!-- about section ends -->
+
+  <!-- about section ends -->
+
+  <!-- footer section starts  -->
+
+  <section class="footer" id="footer">
+    <div class="box-container">
+      <div class="box">
+        <h3 data-en="quick links" data-ml="പെട്ടെന്നുള്ള ലിങ്കുകൾ">quick links</h3>
+        <a href="#home"><i class="fas fa-chevron-right"></i><span data-en="home" data-ml="ഹോം">home</span></a>
+        <a href="#features"><i class="fas fa-chevron-right"></i><span data-en="features" data-ml="ഫീച്ചറുകൾ">features</span></a>
+        <a href="#about"><i class="fas fa-chevron-right"></i><span data-en="about" data-ml="ഞങ്ങളെക്കുറിച്ച്">about</span></a>
+        <a href="#footer"><span data-en="Contact" data-ml="ബന്ധപ്പെടുക">Contact</span></a>
+      </div>
+
+      <div class="box">
+        <h3 data-en="extra links" data-ml="കൂടുതൽ ലിങ്കുകൾ">extra links</h3>
+        <a href="#"><i class="fas fa-chevron-right"></i><span data-en="ask questions" data-ml="ചോദ്യങ്ങൾ ചോദിക്കുക">ask questions</span></a>
+        <a href="#"><i class="fas fa-chevron-right"></i><span data-en="terms of use" data-ml="ഉപയോഗ നിബന്ധനകൾ">terms of use</span></a>
+        <a href="#"><i class="fas fa-chevron-right"></i><span data-en="privacy policy" data-ml="സ്വകാര്യതാ നയം">privacy policy</span></a>
+      </div>
+
+      <div class="box">
+        <h3 data-en="Helpful Resources" data-ml="സഹായകരമായ ഉറവിടങ്ങൾ">Helpful Resources</h3>
+        <a href="#"><i class="fas fa-chevron-right"></i><span data-en="FAQs" data-ml="പതിവായി ചോദിക്കുന്ന ചോദ്യങ്ങൾ">FAQs</span></a>
+        <a href="#"><i class="fas fa-chevron-right"></i><span data-en="User Guides" data-ml="ഉപയോക്തൃ ഗൈഡുകൾ">User Guides</span></a>
+        <a href="#"><i class="fas fa-chevron-right"></i><span data-en="Support Center" data-ml="പിന്തുണ കേന്ദ്രം">Support Center</span></a>
+      </div>
+
+      <div class="box">
+        <h3 data-en="Stay Connected" data-ml="ബന്ധം നിലനിർത്തുക">Stay Connected</h3>
+        <a href="#"><i class="fas fa-chevron-right"></i><span data-en="Future Scope" data-ml="ഭാവി സാധ്യതകൾ">Future Scope</span></a>
+        <a href="#"><i class="fas fa-chevron-right"></i><span data-en="Community Forum" data-ml="കമ്മ്യൂണിറ്റി ഫോറം">Community Forum</span></a>
+        <a href="#"><i class="fas fa-chevron-right"></i><span data-en="Newsletter" data-ml="വാർത്താക്കുറിപ്പ്">Newsletter</span></a>
+      </div>
+    </div>
+
+    <div class="credit">
+      <span data-en="© Copyright 2025 - Designed and Developed by" data-ml="© പകർപ്പവകാശം 2025 - രൂപകൽപ്പന ചെയ്ത് വികസിപ്പിച്ചത്">© Copyright 2025 - Designed and Developed by</span>
+      <a href="" target="_blank"><span data-en="Team VIDHAI" data-ml="ടീം വിധായി">Team VIDHAI</span> </a>
+    </div>
+  </section>
+  
+  <!-- footer section ends -->
+  <script src="script.js"></script>
+  <script src="js/main.js"></script>
+
+    <script>
+    // Translation logic
+    const translateBtn = document.getElementById('translate-btn');
+    const elements = document.querySelectorAll('[data-en]');
+    let isMalayalam = false;
+   translateBtn.addEventListener('click', () => {
+  isMalayalam = !isMalayalam;
+  localStorage.setItem("lang", isMalayalam ? "ml" : "en"); // save preference
+  elements.forEach(element => {
+    const enText = element.dataset.en;
+    const mlText = element.dataset.ml;
+    if (element.tagName === "INPUT") {
+      element.placeholder = isMalayalam ? mlText : enText;
+    } else {
+      element.textContent = isMalayalam ? mlText : enText;
+    }
+  });
+});
+
+const loginBtn = document.getElementById("loginBtn");
+    const profileBtn = document.getElementById("profileBtn");
+    const profileModal = document.getElementById("profileModal");
+    const closeModal = document.getElementById("closeModal");
+    const saveProfileBtn = document.getElementById("saveProfile");
+    const popup = document.getElementById("profilePopup");
+
+    // Show profile modal
+    profileBtn.addEventListener("click", () => {
+      profileModal.style.display = "flex";
+    });
+
+    closeModal.addEventListener("click", () => {
+      profileModal.style.display = "none";
+    });
+
+    // Show popup
+    function showPopup(message, color) {
+      popup.textContent = message;
+      popup.style.backgroundColor = color;
+      popup.classList.add("show");
+      setTimeout(() => {
+        popup.classList.remove("show");
+      }, 2500);
+    }
+
+    // Save profile
+    saveProfileBtn.addEventListener("click", () => {
+      const location = document.getElementById("location").value.trim();
+      const landSize = document.getElementById("landSize").value.trim();
+      const crop = document.getElementById("crop").value.trim();
+      const soil = document.getElementById("soil").value.trim();
+      const irrigation = document.getElementById("irrigation").value.trim();
+
+      if (!location || !landSize || !crop || !soil || !irrigation) {
+        showPopup("Please fill all fields!", "red");
+        return;
+      }
+      const currentUser = sessionStorage.getItem("currentUser");
+      const profileData = { location, landSize, crop, soil, irrigation };
+      
+localStorage.setItem("farmerProfile_" + currentUser, JSON.stringify(profileData));
+
+
+      // Update display section
+      document.getElementById("dispLocation").textContent = location;
+      document.getElementById("dispLandSize").textContent = landSize;
+      document.getElementById("dispCrop").textContent = crop;
+      document.getElementById("dispSoil").textContent = soil;
+      document.getElementById("dispIrrigation").textContent = irrigation;
+
+      showPopup("Profile saved successfully!", "green");
+
+      document.getElementById("profileFormSection").style.display = "none";
+      document.getElementById("profileDisplaySection").style.display = "block";
+
+      // Close modal after 2s
+      setTimeout(() => {
+        profileModal.style.display = "none";
+      }, 2000);
+    });
+
+    // DOMContentLoaded
+window.addEventListener("DOMContentLoaded", () => {
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+  const currentUser = sessionStorage.getItem("currentUser");
+  const loginBtn = document.getElementById("loginBtn");
+  const profileBtn = document.getElementById("profileBtn");
+  
+  const savedLang = localStorage.getItem("lang");
+  if (savedLang) {
+    const isMalayalam = savedLang === "ml";
+    elements.forEach(element => {
+      const enText = element.dataset.en;
+      const mlText = element.dataset.ml;
+      if (element.tagName === "INPUT") {
+        element.placeholder = isMalayalam ? mlText : enText;
+      } else {
+        element.textContent = isMalayalam ? mlText : enText;
+      }
+    });
+  }
+
+  if (isLoggedIn === "true") {
+    if (loginBtn) loginBtn.style.display = "none";
+    if (profileBtn) profileBtn.style.display = "inline-block";
+
+    const savedProfile = JSON.parse(localStorage.getItem("farmerProfile_" + currentUser));
+    if (savedProfile) {
+      // Show display section directly
+      document.getElementById("dispLocation").textContent = savedProfile.location;
+      document.getElementById("dispLandSize").textContent = savedProfile.landSize;
+      document.getElementById("dispCrop").textContent = savedProfile.crop;
+      document.getElementById("dispSoil").textContent = savedProfile.soil;
+      document.getElementById("dispIrrigation").textContent = savedProfile.irrigation;
+
+      document.getElementById("profileFormSection").style.display = "none";
+      document.getElementById("profileDisplaySection").style.display = "block";
+    } else {
+      // No profile => show form
+      document.getElementById("profileFormSection").style.display = "block";
+      document.getElementById("profileDisplaySection").style.display = "none";
+    }
+  } else {
+    if (loginBtn) loginBtn.style.display = "inline-block";
+    if (profileBtn) profileBtn.style.display = "none";
+  }
+});
+ // not logged in => show login button, hide profile
+ 
+document.getElementById("editProfile").addEventListener("click", () => {
+  
+  const currentUser = sessionStorage.getItem("currentUser");
+  const savedProfile = JSON.parse(localStorage.getItem("farmerProfile_" + currentUser));
+  if (!savedProfile) return;
+
+  document.getElementById("location").value = savedProfile.location;
+  document.getElementById("landSize").value = savedProfile.landSize;
+  document.getElementById("crop").value = savedProfile.crop;
+  document.getElementById("soil").value = savedProfile.soil;
+  document.getElementById("irrigation").value = savedProfile.irrigation;
+
+  document.getElementById("profileFormSection").style.display = "block";
+  document.getElementById("profileDisplaySection").style.display = "none";
+});
+//logout
+document.getElementById("logoutProfile").addEventListener("click", () => {
+  const currentUser = sessionStorage.getItem("currentUser");
+if (currentUser) {
+  localStorage.removeItem("farmerProfile_" + currentUser);
+}
+sessionStorage.removeItem("isLoggedIn");
+sessionStorage.removeItem("currentUser");
+window.location.href = "login.html"; // back to login
+
+});
+
+    // Voice input
+    const voiceBtns = document.querySelectorAll(".voice-btn");
+    const fields = ["location", "landSize", "crop", "soil", "irrigation"];
+    voiceBtns.forEach((btn, index) => {
+      btn.addEventListener("click", () => {
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = "ml-IN";
+        recognition.start();
+        recognition.onresult = (event) => {
+          document.getElementById(fields[index]).value = event.results[0][0].transcript;
+        };
+      });
+    });
+
+    // Open Smart Recommendations modal
+document.getElementById("smartRecBtn").addEventListener("click", () => {
+  document.getElementById("smartRecModal").style.display = "flex";
+});
+
+// Close modal
+document.getElementById("closeSmartRec").addEventListener("click", () => {
+  document.getElementById("smartRecModal").style.display = "none";
+});
+
+// Fetch recommendations from modal
+document.getElementById("getKEModal").addEventListener("click", async () => {
+  const crop = document.getElementById("keCropModal").value.trim();
+  const soil = document.getElementById("keSoilModal").value.trim();
+  const temp = parseFloat(document.getElementById("keTempModal").value);
+  const humidity = parseFloat(document.getElementById("keHumidityModal").value);
+
+  if (!crop || !soil) {
+    alert("Please enter both crop and soil type");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://127.0.0.1:5000/recommend", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ crop, soil, temp, humidity, lang: isMalayalam ? "ml" : "en" })
+});
+
+if (!response.ok) {
+      const err = await response.json();
+      alert(err.error || "Error fetching recommendations");
+      return;
+    }
+
+    const data = await response.json();
+    displayKEModal(data);
+
+  } catch (err) {
+    alert("Server error: " + err.message);
+  }
+});
+
+function displayKEModal(data) {
+  let html = `<h3>Crop Stage: ${data.crop_stage}</h3>`;
+
+  html += `<h4>Fertilizer Recommendations:</h4>`;
+  if (data.fertilizers.length) {
+    html += "<ul>";
+    data.fertilizers.forEach(f => {
+      html += `<li>${f["Fertilizer Name"]} (N:${f.Nitrogen}, P:${f.Phosphorous}, K:${f.Potassium})</li>`;
+    });
+    html += "</ul>";
+  } else html += "<p>No fertilizer recommendations found.</p>";
+
+  html += `<h4>Pest Risks:</h4>`;
+  if (data.pest_risk.length) {
+    html += "<ul>";
+    data.pest_risk.forEach(p => {
+      html += `<li>${p.Pest}: ${p.Solution}</li>`;
+    });
+    html += "</ul>";
+  } else html += "<p>No pest risks found.</p>";
+
+  html += `<h4>Best Practices:</h4>`;
+  html += `<p>${data.best_practices}</p>`;
+
+  document.getElementById("keResultModal").innerHTML = html;
+}
+
+// Close Smart Recommendations modal
+document.getElementById("closeSmartRec").addEventListener("click", () => {
+  const modal = document.getElementById("smartRecModal");
+  modal.style.display = "none";
+
+  // Clear all input fields 
+  document.getElementById("keCropModal").value = "";
+  document.getElementById("keSoilModal").value = "";
+  document.getElementById("keTempModal").value = "";
+  document.getElementById("keHumidityModal").value = "";
+
+  // Clear previous results
+  document.getElementById("keResultModal").innerHTML = "";              
+});
+
+
+  </script>
+</body>
+
 </html>

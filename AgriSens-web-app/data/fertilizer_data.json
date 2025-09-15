@@ -1,0 +1,255 @@
+{
+  "labels": {
+    "soil_types": {
+      "Sandy": { "en": "Sandy", "ml": "മണല്‍ മണ്ണ്" },
+      "Loamy": { "en": "Loamy", "ml": "ലോമി മണ്ണ്" },
+      "Black": { "en": "Black", "ml": "കറുത്ത മണ്ണ്" },
+      "Red": { "en": "Red", "ml": "ചുവപ്പ് മണ്ണ്" },
+      "Clayey": { "en": "Clayey", "ml": "ചെളിമണ്ണ്" }
+    },
+    "crop_types": {
+      "Maize": { "en": "Maize", "ml": "ചോളം" },
+      "Sugarcane": { "en": "Sugarcane", "ml": "കരിമ്പ്" },
+      "Cotton": { "en": "Cotton", "ml": "പരുത്തി" },
+      "Tobacco": { "en": "Tobacco", "ml": "പുകയില" },
+      "Paddy": { "en": "Paddy", "ml": "നേല്" },
+      "Barley": { "en": "Barley", "ml": "ബാര്‍ലി" },
+      "Wheat": { "en": "Wheat", "ml": "ഗോതമ്പ്" },
+      "Millets": { "en": "Millets", "ml": "ചിരധാന്യങ്ങള്‍" },
+      "Oil seeds": { "en": "Oil seeds", "ml": "എണ്ണ വിത്തുകള്‍" },
+      "Pulses": { "en": "Pulses", "ml": "പയര്‍ വിളകള്‍" },
+      "Ground Nuts": { "en": "Ground Nuts", "ml": "നിലക്കടല" }
+    },
+    "fertilizers": {
+      "Urea": { "en": "Urea", "ml": "യൂറിയ" },
+      "DAP": { "en": "DAP", "ml": "ഡി.എ.പി." },
+      "14-35-14": { "en": "14-35-14", "ml": "14-35-14" },
+      "28-28": { "en": "28-28", "ml": "28-28" },
+      "17-17-17": { "en": "17-17-17", "ml": "17-17-17" },
+      "20-20": { "en": "20-20", "ml": "20-20" },
+      "10-26-26": { "en": "10-26-26", "ml": "10-26-26" }
+    }
+  },
+  "data": [
+    {
+      "Temperature": 26,
+      "Humidity": 52,
+      "Moisture": 38,
+      "SoilType": "Sandy",
+      "CropType": "Maize",
+      "Nitrogen": 37,
+      "Potassium": 0,
+      "Phosphorous": 0,
+      "Fertilizer": "Urea"
+    },
+    {
+      "Temperature": 29,
+      "Humidity": 52,
+      "Moisture": 45,
+      "SoilType": "Loamy",
+      "CropType": "Sugarcane",
+      "Nitrogen": 12,
+      "Potassium": 0,
+      "Phosphorous": 36,
+      "Fertilizer": "DAP"
+    },
+    {
+      "Temperature": 34,
+      "Humidity": 65,
+      "Moisture": 62,
+      "SoilType": "Black",
+      "CropType": "Cotton",
+      "Nitrogen": 7,
+      "Potassium": 9,
+      "Phosphorous": 30,
+      "Fertilizer": "14-35-14"
+    },
+    {
+      "Temperature": 32,
+      "Humidity": 62,
+      "Moisture": 34,
+      "SoilType": "Red",
+      "CropType": "Tobacco",
+      "Nitrogen": 22,
+      "Potassium": 0,
+      "Phosphorous": 20,
+      "Fertilizer": "28-28"
+    },
+    {
+      "Temperature": 28,
+      "Humidity": 54,
+      "Moisture": 46,
+      "SoilType": "Clayey",
+      "CropType": "Paddy",
+      "Nitrogen": 35,
+      "Potassium": 0,
+      "Phosphorous": 0,
+      "Fertilizer": "Urea"
+    },
+    {
+      "Temperature": 26,
+      "Humidity": 52,
+      "Moisture": 35,
+      "SoilType": "Sandy",
+      "CropType": "Barley",
+      "Nitrogen": 12,
+      "Potassium": 10,
+      "Phosphorous": 13,
+      "Fertilizer": "17-17-17"
+    },
+    {
+      "Temperature": 25,
+      "Humidity": 50,
+      "Moisture": 64,
+      "SoilType": "Red",
+      "CropType": "Cotton",
+      "Nitrogen": 9,
+      "Potassium": 0,
+      "Phosphorous": 10,
+      "Fertilizer": "20-20"
+    },
+    {
+      "Temperature": 33,
+      "Humidity": 64,
+      "Moisture": 50,
+      "SoilType": "Loamy",
+      "CropType": "Wheat",
+      "Nitrogen": 41,
+      "Potassium": 0,
+      "Phosphorous": 0,
+      "Fertilizer": "Urea"
+    },
+    {
+      "Temperature": 30,
+      "Humidity": 60,
+      "Moisture": 42,
+      "SoilType": "Sandy",
+      "CropType": "Millets",
+      "Nitrogen": 21,
+      "Potassium": 0,
+      "Phosphorous": 18,
+      "Fertilizer": "28-28"
+    },
+    {
+      "Temperature": 29,
+      "Humidity": 58,
+      "Moisture": 33,
+      "SoilType": "Black",
+      "CropType": "Oil seeds",
+      "Nitrogen": 9,
+      "Potassium": 7,
+      "Phosphorous": 30,
+      "Fertilizer": "14-35-14"
+    },
+    {
+      "Temperature": 27,
+      "Humidity": 54,
+      "Moisture": 28,
+      "SoilType": "Clayey",
+      "CropType": "Pulses",
+      "Nitrogen": 13,
+      "Potassium": 0,
+      "Phosphorous": 40,
+      "Fertilizer": "DAP"
+    },
+    {
+      "Temperature": 31,
+      "Humidity": 62,
+      "Moisture": 48,
+      "SoilType": "Sandy",
+      "CropType": "Maize",
+      "Nitrogen": 14,
+      "Potassium": 15,
+      "Phosphorous": 12,
+      "Fertilizer": "17-17-17"
+    },
+    {
+      "Temperature": 25,
+      "Humidity": 50,
+      "Moisture": 65,
+      "SoilType": "Loamy",
+      "CropType": "Cotton",
+      "Nitrogen": 36,
+      "Potassium": 0,
+      "Phosphorous": 0,
+      "Fertilizer": "Urea"
+    },
+    {
+      "Temperature": 32,
+      "Humidity": 62,
+      "Moisture": 41,
+      "SoilType": "Clayey",
+      "CropType": "Paddy",
+      "Nitrogen": 24,
+      "Potassium": 0,
+      "Phosphorous": 22,
+      "Fertilizer": "28-28"
+    },
+    {
+      "Temperature": 26,
+      "Humidity": 52,
+      "Moisture": 31,
+      "SoilType": "Red",
+      "CropType": "Ground Nuts",
+      "Nitrogen": 14,
+      "Potassium": 0,
+      "Phosphorous": 41,
+      "Fertilizer": "DAP"
+    },
+    {
+      "Temperature": 31,
+      "Humidity": 62,
+      "Moisture": 49,
+      "SoilType": "Black",
+      "CropType": "Sugarcane",
+      "Nitrogen": 10,
+      "Potassium": 13,
+      "Phosphorous": 14,
+      "Fertilizer": "17-17-17"
+    },
+    {
+      "Temperature": 33,
+      "Humidity": 64,
+      "Moisture": 34,
+      "SoilType": "Clayey",
+      "CropType": "Pulses",
+      "Nitrogen": 38,
+      "Potassium": 0,
+      "Phosphorous": 0,
+      "Fertilizer": "Urea"
+    },
+    {
+      "Temperature": 25,
+      "Humidity": 50,
+      "Moisture": 39,
+      "SoilType": "Sandy",
+      "CropType": "Barley",
+      "Nitrogen": 21,
+      "Potassium": 0,
+      "Phosphorous": 19,
+      "Fertilizer": "28-28"
+    },
+    {
+      "Temperature": 28,
+      "Humidity": 54,
+      "Moisture": 65,
+      "SoilType": "Black",
+      "CropType": "Cotton",
+      "Nitrogen": 39,
+      "Potassium": 0,
+      "Phosphorous": 0,
+      "Fertilizer": "Urea"
+    },
+    {
+      "Temperature": 29,
+      "Humidity": 58,
+      "Moisture": 52,
+      "SoilType": "Loamy",
+      "CropType": "Wheat",
+      "Nitrogen": 13,
+      "Potassium": 0,
+      "Phosphorous": 36,
+      "Fertilizer": "DAP"
+    }
+  ]
+}

@@ -12,6 +12,33 @@
   color: #000;
   text-decoration: none;
 }
+/* Common button style */
+.btn,
+.login-btn {
+  background: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.btn:hover,
+.login-btn:hover {
+  background: #45a049;
+  transform: scale(1.05);
+}
+.navbar .login-btn {
+  margin-left: auto; /* pushes it to right */
+}
+#showPass {
+  font-size: 18px;
+  color: #4caf50;
+}
+#showPass:hover {
+  color: #121412;
+}
 
 ::selection {
   background-color: var(--Soft-Red);
@@ -97,6 +124,7 @@ html {
 
 .header .logo {
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .header .navbar a {
@@ -160,6 +188,11 @@ html {
     background-color: #fff;
     transform: scale(0);
     transform-origin: top right;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-grow: 1;
+    white-space: nowrap;
   }
 
   .header .navbar.active {
@@ -184,283 +217,69 @@ html {
 
 /* home section starts  */
 
+/* home section starts (UPDATED for video background) */
+
 .home {
   position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  /* Make the section full height of the viewport */
 }
 
-.home .content {
-  text-align: center;
-  z-index: 1;
-  /* Place the content above the image */
-  color: #fff;
-  /* Change the text color as needed */
-}
-
-.home h1 {
-  font-size: 6em;
-  margin-bottom: 20px;
-  color: #ffffff;
-}
-
-.home p {
-  font-size: 2em;
-  font-family: "Dancing Script", cursive;
-  margin-bottom: 30px;
-  color: #ffffff;
-}
-
-/* Keyframes for the blink animation */
-/* @keyframes blink {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-} */
-
-.home-btn {
-  display: inline-block;
-  padding: 10px 20px;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 1.5em;
-  font-weight: bold;
-  background-color: #3498db;
-  color: #fff;
-  border-radius: 50px;
-  transition: background-color 0.3s ease;
-  animation: blink 1.8s infinite;
-}
-
-.home-btn:hover {
-  background-color: #2980b9;
-  /* Change the hover background color as needed */
-}
-
-/* Style for the image within the home section */
-.home img {
+.home .video-container {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: fill;
+  overflow: hidden;
   z-index: 0;
-  /* Place the image behind the content */
+}
+
+.home .video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* UPDATED: Button moved to bottom */
+.home .overlay-content {
+  position: absolute;
+  bottom: 40px; /* distance from bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 2;
+}
+
+.home-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  font-weight: bold;
+  background-color: var(--Soft-Blue);
+  color: #fff;
+  border-radius: 50px;
+  transition: background-color 0.3s ease;
+}
+
+.home-btn:hover {
+  background-color: #0d6efd;
+  color: #fff;
 }
 
 /* Media Queries Home */
-
-/* Media query for min-width: 1025px and max-width: 1280px */
-@media (min-width: 1025px) and (max-width: 1280px) {
-  .home h1 {
-    font-size: 5em;
-  }
-
-  .home p {
-    font-size: 2em;
-    margin-bottom: 25px;
-  }
-
-  .home-btn {
-    padding: 15px 30px;
-    font-size: 1.5em;
-  }
-
-  .home img {
-    object-fit: fill;
-  }
-
-  .features .row .image img {
-    width: 100%;
-  }
-
-  .rounded-corner-image {
-    border-radius: 10px;
-    /* Adjust the level of curvature for this screen size range */
-  }
-
-  .about .box img {
-    border-radius: 8px;
-    /* Adjust border-radius for about section images */
-  }
-
-  .footer .box img {
-    border-radius: 8px;
-    /* Adjust border-radius for footer section images */
-  }
-}
-
-/* Media query for min-width: 768px and max-width: 1024px */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .home h1 {
-    font-size: 4em;
-  }
-
-  .home p {
-    font-size: 1.8em;
-    margin-bottom: 20px;
-  }
-
-  .home-btn {
-    padding: 12px 25px;
-    font-size: 1.4em;
-  }
-
-  .home img {
-    object-fit: fill;
-  }
-
-  .features .row .image img {
-    width: 100%;
-  }
-
-  .rounded-corner-image {
-    border-radius: 8px;
-    /* Adjust the level of curvature for this screen size range */
-  }
-
-  .about .box img {
-    border-radius: 6px;
-    /* Adjust border-radius for about section images */
-  }
-
-  .footer .box img {
-    border-radius: 6px;
-    /* Adjust border-radius for footer section images */
-  }
-}
-
-/* Media query for min-width: 768px, max-width: 1024px, and landscape orientation */
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-  .home h1 {
-    font-size: 3.5em;
-  }
-
-  .home p {
-    font-size: 1.6em;
-    margin-bottom: 20px;
-  }
-
-  .home-btn {
-    padding: 12px 25px;
-    font-size: 1.3em;
-  }
-
-  .home img {
-    object-fit: fill;
-  }
-
-  .features .row .image img {
-    width: 100%;
-  }
-
-  .rounded-corner-image {
-    border-radius: 8px;
-    /* Adjust the level of curvature for this screen size range and orientation */
-  }
-
-  .about .box img {
-    border-radius: 6px;
-    /* Adjust border-radius for about section images */
-  }
-
-  .footer .box img {
-    border-radius: 6px;
-    /* Adjust border-radius for footer section images */
-  }
-}
-
-/* Media query for min-width: 481px and max-width: 767px */
-@media (min-width: 481px) and (max-width: 767px) {
-  .home h1 {
-    font-size: 3.5em;
-  }
-
-  .home p {
-    font-size: 1.6em;
-    margin-bottom: 20px;
-  }
-
-  .home-btn {
-    padding: 12px 25px;
-    font-size: 1.3em;
-  }
-
-  .home img {
-    object-fit: fill;
-  }
-
-  .features .row .image img {
-    width: 100%;
-  }
-
-  .rounded-corner-image {
-    border-radius: 8px;
-    /* Adjust the level of curvature for this screen size range */
-  }
-
-  .about .box img {
-    border-radius: 6px;
-    /* Adjust border-radius for about section images */
-  }
-
-  .footer .box img {
-    border-radius: 6px;
-    /* Adjust border-radius for footer section images */
-  }
-}
-
-/* Media query for min-width: 320px and max-width: 480px */
 @media (min-width: 320px) and (max-width: 480px) {
-  .home h1 {
-    font-size: 3em;
-  }
-
-  .home p {
-    font-size: 1.5em;
-    margin-bottom: 15px;
-  }
-
   .home-btn {
     padding: 10px 20px;
     font-size: 1.2em;
   }
-
-  .home img {
-    object-fit: fill;
-  }
-
-  .features .row .image img {
-    width: 100%;
-  }
-
-  .rounded-corner-image {
-    border-radius: 6px;
-    /* Adjust the level of curvature for this screen size range */
-  }
-
-  .about .box img {
-    border-radius: 4px;
-    /* Adjust border-radius for about section images */
-  }
-
-  .footer .box img {
-    border-radius: 4px;
-    /* Adjust border-radius for footer section images */
-  }
 }
-
-/* Media Queries ends */
-
-/* home section ends */
 
 /* features section starts  */
 
@@ -492,9 +311,7 @@ html {
 
 .rounded-corner-image {
   border-radius: 10px;
-  /* Adjust the value to change the level of curvature */
   overflow: hidden;
-  /* Ensures the corners are actually rounded */
 }
 
 .features .heading p {
@@ -525,9 +342,7 @@ html {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin: 10px;
-  margin-left: 200px;
-  margin-right: 200px;
+  margin: 10px 200px;
 }
 
 .buttonn {
@@ -558,181 +373,87 @@ html {
   color: white;
 }
 
-@media (min-width: 481px) and (max-width: 767px) {
-  .button-container0 {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 20px;
-  }
-
-  .buttonn {
-    padding: 10px 20px;
-  }
-}
-
-@media (min-width: 320px) and (max-width: 480px) {
-  .button-container0 {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 20px;
-  }
-
-  .buttonn {
-    padding: 10px 20px;
-  }
-}
-
-/*Button-0 container end*/
-
 /* features section ends */
 
 /* about section starts  */
 
-.about .box-container {
-  display: grid;
-  gap: 2rem;
-  grid-template-columns: repeat(6, 1fr);
-  /* Fixed to 6 columns */
-  /* grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); */
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+/* about section starts */
+
+.about {
+  padding: 8rem 9%;
+  background: #fff;
 }
 
-@media (min-width: 481px) and (max-width: 767px) {
-  .about .box-container {
-    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-  }
+.about .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5rem;
 }
 
-@media (min-width: 320px) and (max-width: 480px) {
-  .about .box-container {
-    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-  }
+.about .row .image {
+  flex: 1 1 45rem;
 }
 
-.about .box {
-  border: 2px black solid;
-  box-shadow: black 0px 5px 15px;
-  border-radius: 0.5rem;
-  text-align: center;
-  padding: 2.5rem;
-}
-
-.about .box:hover {
-  border: 2px black solid;
-  box-shadow: none;
-}
-
-.about .box h3 {
-  font-size: 2rem;
-  padding: 0.2rem 0;
-  color: black;
-}
-
-.about .box p {
-  font-size: 1.7rem;
-  padding-bottom: 2.5rem;
-  color: black;
-}
-
-/* Style for the member image */
-.box img {
+.about .row .image img {
   width: 100%;
-  height: auto;
-  border-radius: 8px;
-  /* Adds a slight border-radius to the image */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  /* Adds a subtle box shadow */
-  object-fit: cover;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.box img:hover {
-  transform: scale(1.05);
-  /* Increases the size of the image on hover */
-  transition: transform 0.3s ease;
-  cursor: pointer;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  /* Adds a darker box shadow on hover */
+.about .row .content {
+  flex: 1 1 45rem;
 }
 
-/* styles for member details and button */
-.box h3,
-.box p {
-  margin: 10px 0;
+.about .row .content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--Very-Dark-Blue);
+  margin-bottom: 1.5rem;
 }
 
-.all-btn {
-  display: inline-block;
-  padding: 10px 20px;
-  text-decoration: none;
-  background-color: #3498db;
-  color: #fff;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+.about .row .content p {
+  font-size: 1.6rem;
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  text-align: justify;
 }
 
-.all-btn:hover {
-  background-color: #2980b9;
-  /* Change the hover background color */
-}
-
-/* Style for the social media icons */
-.box a {
-  display: inline-block;
-  margin: 5px;
-}
-
-/* Style for Instagram icon */
-.box a i.fa-instagram {
-  font-size: 24px;
-  color: #405de6;
-}
-
-/* Style for Instagram icon on hover */
-.box a i.fa-instagram:hover {
-  background-color: #405de6;
-  border-radius: 50%;
-  padding: 5px;
+.about .row .content h2 {
+  font-size: 2rem;
+  margin: 2rem 0 1rem;
   color: var(--Soft-Blue);
-  border: 2px solid var(--Soft-Blue);
-  color: rgb(255, 255, 255);
 }
 
-/* Style for LinkedIn icon */
-.box a i.fa-linkedin {
-  font-size: 24px;
-  color: #0077b5;
+.about .row .content ul {
+  margin-left: 2rem;
+  margin-bottom: 2.5rem;
 }
 
-/* Style for LinkedIn icon on hover */
-.box a i.fa-linkedin:hover {
-  background-color: #0077b5;
-  border-radius: 50%;
-  padding: 5px;
-  color: var(--Soft-Blue);
-  border: 2px solid var(--Soft-Blue);
-  color: rgb(255, 255, 255);
+.about .row .content ul li {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #444;
+  line-height: 1.6;
 }
 
-/* Style for GitHub icon */
-.box a i.fa-github {
-  font-size: 24px;
-  color: #333;
+.about .row .content ul li b {
+  color: var(--Very-Dark-Blue);
 }
 
-/* Style for GitHub icon on hover */
-.box a i.fa-github:hover {
-  background-color: #333;
-  border-radius: 50%;
-  padding: 5px;
-  color: var(--Soft-Blue);
-  border: 2px solid var(--Soft-Blue);
-  color: rgb(255, 255, 255);
+@media (max-width: 768px) {
+  .about .row {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .about .row .content ul {
+    text-align: left;
+  }
 }
 
-/* styles for member image ends */
+/* about section ends */
 
 /* about section ends */
 
@@ -752,20 +473,17 @@ html {
 
 .footer .box-container .box h3 {
   font-size: 2.5rem;
-  color: var(--black);
   padding: 1rem 0;
 }
 
 .footer .box-container .box a {
   display: block;
   font-size: 1.5rem;
-  color: var(--light-color);
   padding: 1rem 0;
 }
 
 .footer .box-container .box a i {
   padding-right: 0.5rem;
-  color: var(--green);
 }
 
 .footer .box-container .box a:hover i {
@@ -789,4 +507,3 @@ html {
 }
 
 /* footer section ends */
-  

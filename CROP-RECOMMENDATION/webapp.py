@@ -19,7 +19,7 @@ from sklearn.preprocessing import LabelEncoder
 # Display Images
 # import Image from pillow to open images
 from PIL import Image
-img = Image.open("crop.png")
+img = Image.open("crop-rec.png")
 # display image using streamlit
 # width is used to set the width of an image
 st.image(img)
@@ -71,9 +71,9 @@ def predict_crop(nitrogen, phosphorus, potassium, temperature, humidity, ph, rai
 ## Streamlit code for the web app interface
 def main():  
     # # Setting the title of the web app
-    st.markdown("<h1 style='text-align: center;'>SMART CROP RECOMMENDATIONS", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>SMART CROP RECOMMENDATION", unsafe_allow_html=True)
     
-    st.sidebar.title("AgriSens")
+    st.sidebar.title("VIDHAI")
     # # Input fields for the user to enter the environmental factors
     st.sidebar.header("Enter Crop Details")
     nitrogen = st.sidebar.number_input("Nitrogen", min_value=0.0, max_value=140.0, value=0.0, step=0.1)
@@ -98,4 +98,3 @@ def main():
 ## Running the main function
 if __name__ == '__main__':
     main()
-
