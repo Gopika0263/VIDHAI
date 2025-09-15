@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div align="center">
     <h1>AgriSens : AI-POWERED SMART FARMING ASSISTANT</h1>
 </div>
@@ -275,3 +276,8 @@ If you have any questions or feedback, feel free to reach out to us at [🔗Link
 
 
 
+=======
+# VIDHAI_APP
+>>>>>>> b83589ac878362dda0a414c31b3e6adce41f9d4b
+#   V I D H A I  
+ 
