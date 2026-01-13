@@ -3,13 +3,11 @@ from flask_pymongo import PyMongo
 from flask_cors import CORS
 from knowledge_engine import KnowledgeEngine
 
-app = Flask(__name__)
+app = Flask(__name__)  # ✅ Corrected
 CORS(app)
 ke = KnowledgeEngine()
 app.config["MONGO_URI"] = "mongodb://localhost:27017/krishi_sakhi"
 mongo = PyMongo(app)
-
-
 
 # ✅ Register API (no OTP, sample testing)
 @app.route('/register', methods=['POST'])
@@ -55,6 +53,6 @@ def recommend():
     rec = ke.recommend(crop, soil, temp, humidity, lang=lang)
     return jsonify(rec)
 
+# ✅ Use double underscores here as well
 if __name__ == "__main__":
     app.run(debug=True)
-

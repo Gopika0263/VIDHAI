@@ -1,0 +1,52 @@
+{
+  "data": [
+    {
+      "Crop": "Maize",
+      "Crop_ml": "ചോളം",
+      "Pest": "Stem Borer",
+      "Pest_ml": "തണ്ട് പൊട്ടിക്കുന്ന പുഴു",
+      "Solution": "Spray neem oil 3% or Carbofuran granules at sowing stage",
+      "Solution_ml": "വിത്ത് വിതയ്ക്കുന്ന ഘട്ടത്തില്‍ 3% നിമ് ഓയില്‍ അല്ലെങ്കില്‍ കാര്‍ബോഫ്യൂറാന്‍ ഗ്രാന്യൂളുകള്‍ സ്പ്രേ ചെയ്യുക"
+    },
+    {
+      "Crop": "Sugarcane",
+      "Crop_ml": "കരിമ്പ്",
+      "Pest": "Early Shoot Borer",
+      "Pest_ml": "മുന്‍കൈ തൊണ്ട പൊട്ടിക്കുന്ന പുഴു",
+      "Solution": "Apply Trichogramma egg parasitoids and soil drenching with Chlorpyrifos",
+      "Solution_ml": "ട്രൈക്കോഗ്രാമ്മ ഏഗ് പാരാസിറ്റോയിഡ് പ്രയോഗിച്ച് ക്ലോറോപൈറിഫോസ് ഉപയോഗിച്ച് മണ്ണ് ഒഴിക്കുക"
+    },
+    {
+      "Crop": "Cotton",
+      "Crop_ml": "പരുത്തി",
+      "Pest": "Bollworm",
+      "Pest_ml": "പല്ലി പുഴു",
+      "Solution": "Use pheromone traps, spray Bt formulation",
+      "Solution_ml": "ഫെറോമോണ്‍ ട്രാപ്പുകള്‍ ഉപയോഗിക്കുക, ബി.ടി. ഫോര്‍മുലേഷന്‍ സ്പ്രേ ചെയ്യുക"
+    },
+    {
+      "Crop": "Paddy",
+      "Crop_ml": "നേല്",
+      "Pest": "Brown Planthopper",
+      "Pest_ml": "ബ്രൗണ്‍ പ്ലാന്റ് ഹോപ്പര്‍",
+      "Solution": "Maintain proper spacing, spray Triazophos if infestation is severe",
+      "Solution_ml": "സമചിതമായ ഇടവേള നിലനിർത്തുക, കടുത്ത അണുബാധ ഉണ്ടെങ്കില്‍ ട്രയാസോഫോസ് സ്പ്രേ ചെയ്യുക"
+    },
+    {
+      "Crop": "Barley",
+      "Crop_ml": "ബാര്‍ലി",
+      "Pest": "Aphids",
+      "Pest_ml": "ആഫിഡ്സ്",
+      "Solution": "Apply imidacloprid spray at vegetative stage",
+      "Solution_ml": "വളര്‍ച്ച ഘട്ടത്തില്‍ ഇമിഡാക്ക്ലോപ്രിഡ് സ്പ്രേ ചെയ്യുക"
+    },
+    {
+      "Crop": "Tobacco",
+      "Crop_ml": "പുകയില",
+      "Pest": "Leaf Caterpillar",
+      "Pest_ml": "ഇലക്കുരു പുഴു",
+      "Solution": "Hand pick caterpillars and spray neem-based pesticide",
+      "Solution_ml": "ഇലക്കുരു പുഴുക്കളെ കൈകൊണ്ട് നീക്കി നിം ആധാരിത കീടനാശിനി സ്പ്രേ ചെയ്യുക"
+    }
+  ]
+}

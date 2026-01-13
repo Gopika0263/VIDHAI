@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crop Calendar</title>
+    <style>
+      td {
+        border: 1px solid black;
+        padding: 10px;
+        text-align: center;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      th {
+        background-color: #f2f2f2;
+        color: #333;
+        font-weight: 600;
+        border: black;
+      }
+
+      /* Crop activities colors */
+      .Sowing,
+      .Planting {
+        background-color: #d0f0c0; /* light green */
+        color: #2e7d32;
+        font-weight: 500;
+      }
+
+      .Vegetative,
+      .Seedling,
+      .Nursery {
+        background-color: #fff8dc; /* cream */
+        color: #b57e00;
+        font-weight: 500;
+      }
+
+      .Flowering,
+      .Topping {
+        background-color: #ffd1dc; /* soft pink */
+        color: #c2185b;
+        font-weight: 500;
+      }
+
+      .Harvesting,
+      .Curing {
+        background-color: #cce5ff; /* light blue */
+        color: #004085;
+        font-weight: 500;
+      }
+
+      .Off-season {
+        background-color: #e0e0e0; /* neutral gray */
+        color: #6c757d;
+        font-weight: 500;
+      }
+
+      .Post-harvest {
+        background-color: #f7f7f7; /* light off-white */
+        color: #495057;
+        font-weight: 500;
+      }
+
+      /* Hover effect for interactivity */
+      td:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+        transform: scale(1.02);
+      }
+
+      /* Optional: rounded table & shadow */
+      table {
+        border-collapse: collapse;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- படம் முதலில் -->
+    <div style="text-align: center">
+      <img
+        src="images/crop_caled.jpg"
+        alt="Crop Calendar Image"
+        style="
+          width: 100%;
+          max-height: 400px;
+          object-fit: cover;
+          margin-bottom: 10px;
+        "
+      />
+    </div>
+
+    <!-- Heading + Button பின் வருகிறது -->
+    <h2 style="text-align: center; font-size: 50px; margin-top: 0">
+      Crop Calendar
+      <button
+        style="
+          background-color: #c2185b;
+          color: white;
+          padding: 5px 12px;
+          border-radius: 10px;
+          font-size: 18px;
+          margin-left: 10px;
+          cursor: pointer;
+        "
+        onclick="toggleLanguage()"
+      >
+        TRANSLATE
+      </button>
+    </h2>
+
+    <table id="calendar-table">
+      <thead>
+        <tr style="border: black">
+          <th>Crop</th>
+          <th>Jan</th>
+          <th>Feb</th>
+          <th>Mar</th>
+          <th>Apr</th>
+          <th>May</th>
+          <th>Jun</th>
+          <th>Jul</th>
+          <th>Aug</th>
+          <th>Sep</th>
+          <th>Oct</th>
+          <th>Nov</th>
+          <th>Dec</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      const data = {
+        Maize: {
+          January: { en: "Not Suitable", ml: "ഉചിതമല്ല" },
+          February: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          March: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          April: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          May: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          June: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          July: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          August: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          September: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          October: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          November: { en: "Post-harvest", ml: "അറവെടുപ്പ് കഴിഞ്ഞ്" },
+          December: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+        },
+        Sugarcane: {
+          January: { en: "Planting", ml: "നട്ട്‌വയ്പ്" },
+          February: { en: "Tillering", ml: "ടില്ലറിംഗ്" },
+          March: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          April: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          May: { en: "Irrigation", ml: "ജലസേചനം" },
+          June: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          July: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          August: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          September: { en: "Maturity", ml: "പാക്വത" },
+          October: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          November: { en: "Ratoon Management", ml: "റാറ്റൂൺ മാനേജ്മെന്റ്" },
+          December: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+        },
+        Cotton: {
+          January: { en: "Land Prep", ml: "ഭൂമിയൊരുക്കൽ" },
+          February: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          March: { en: "Seedling", ml: "തൈ" },
+          April: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          May: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          June: { en: "Boll Formation", ml: "ബോൾ രൂപീകരണം" },
+          July: { en: "Boll Formation", ml: "ബോൾ രൂപീകരണം" },
+          August: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Post-harvest", ml: "അറവെടുപ്പ് കഴിഞ്ഞ്" },
+          November: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          December: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+        },
+        Paddy: {
+          January: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          February: { en: "Transplanting", ml: "തൈ നടൽ" },
+          March: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          April: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          May: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          June: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          July: { en: "Transplanting", ml: "തൈ നടൽ" },
+          August: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          September: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          October: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          November: { en: "Post-harvest", ml: "അറവെടുപ്പ് കഴിഞ്ഞ്" },
+          December: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+        },
+        Barley: {
+          January: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          February: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          March: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          April: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          May: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          June: { en: "Land Prep", ml: "ഭൂമിയൊരുക്കൽ" },
+          July: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          August: { en: "Seedling", ml: "തൈ" },
+          September: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          October: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          November: { en: "Maturity", ml: "പാക്വത" },
+          December: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+        },
+        Tobacco: {
+          January: { en: "Nursery", ml: "നഴ്സറി" },
+          February: { en: "Transplanting", ml: "തൈ നടൽ" },
+          March: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          April: { en: "Topping & Suckering", ml: "ടോപ്പിംഗ് & സക്കറിംഗ്" },
+          May: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          June: { en: "Curing", ml: "ക്യൂറിംഗ്" },
+          July: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          August: { en: "Nursery", ml: "നഴ്സറി" },
+          September: { en: "Transplanting", ml: "തൈ നടൽ" },
+          October: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          November: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          December: { en: "Curing", ml: "ക്യൂറിംഗ്" },
+        },
+
+        Rubber: {
+          January: { en: "Tapping", ml: "ടാപ്പിംഗ്" },
+          February: { en: "Growth", ml: "വളർച്ച" },
+          March: { en: "Growth", ml: "വളർച്ച" },
+          April: { en: "Growth", ml: "വളർച്ച" },
+          May: { en: "Growth", ml: "വളർച്ച" },
+          June: { en: "Tapping", ml: "ടാപ്പിംഗ്" },
+          July: { en: "Growth", ml: "വളർച്ച" },
+          August: { en: "Growth", ml: "വളർച്ച" },
+          September: { en: "Growth", ml: "വളർച്ച" },
+          October: { en: "Tapping", ml: "ടാപ്പിംഗ്" },
+          November: { en: "Growth", ml: "വളർച്ച" },
+          December: { en: "Growth", ml: "വളർച്ച" },
+        },
+        Tea: {
+          January: { en: "Plucking", ml: "തണ്ണിയെടുക്കൽ" },
+          February: { en: "Plucking", ml: "തണ്ണിയെടുക്കൽ" },
+          March: { en: "Growth", ml: "വളർച്ച" },
+          April: { en: "Growth", ml: "വളർച്ച" },
+          May: { en: "Growth", ml: "വളർച്ച" },
+          June: { en: "Plucking", ml: "തണ്ണിയെടുക്കൽ" },
+          July: { en: "Growth", ml: "വളർച്ച" },
+          August: { en: "Growth", ml: "വളർച്ച" },
+          September: { en: "Growth", ml: "വളർച്ച" },
+          October: { en: "Plucking", ml: "തണ്ണിയെടുക്കൽ" },
+          November: { en: "Growth", ml: "വളർച്ച" },
+          December: { en: "Growth", ml: "വളർച്ച" },
+        },
+        Coffee: {
+          January: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          February: { en: "Growth", ml: "വളർച്ച" },
+          March: { en: "Growth", ml: "വളർച്ച" },
+          April: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          May: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          June: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          July: { en: "Growth", ml: "വളർച്ച" },
+          August: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          November: { en: "Growth", ml: "വളർച്ച" },
+          December: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+        },
+        Coconut: {
+          January: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          February: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          March: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          April: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          May: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          June: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          July: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          August: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          November: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          December: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+        },
+        Banana: {
+          January: { en: "Planting", ml: "നട്ട്‌വയ്പ്" },
+          February: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          March: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          April: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          May: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          June: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          July: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          August: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          November: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          December: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+        },
+        // Fruits
+        Mango: {
+          January: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          February: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          March: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          April: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          May: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          June: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          July: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          August: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          November: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          December: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+        },
+
+        Jackfruit: {
+          January: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          February: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          March: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          April: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          May: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          June: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          July: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          August: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          November: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          December: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+        },
+
+        Pineapple: {
+          January: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          February: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          March: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          April: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          May: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          June: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          July: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          August: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          November: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          December: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+        },
+
+        Papaya: {
+          January: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          February: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          March: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          April: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          May: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          June: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          July: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          August: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          September: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          October: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          November: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          December: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+        },
+
+        Guava: {
+          January: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          February: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          March: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          April: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          May: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          June: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          July: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          August: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          September: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          October: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          November: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          December: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+        },
+
+        // Spices
+        Pepper: {
+          January: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          February: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          March: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          April: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          May: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          June: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          July: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          August: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          September: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          October: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          November: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          December: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+        },
+
+        Cardamom: {
+          January: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          February: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          March: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          April: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          May: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          June: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          July: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          August: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          September: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          October: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          November: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          December: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+        },
+
+        Cloves: {
+          January: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          February: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          March: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          April: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          May: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          June: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          July: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          August: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          September: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          October: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          November: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          December: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+        },
+
+        Nutmeg: {
+          January: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          February: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          March: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          April: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          May: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          June: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          July: { en: "Fruit Development", ml: "ഫല വികസനം" },
+          August: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          September: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          October: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          November: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          December: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+        },
+        Ginger: {
+          January: { en: "Planting", ml: "നട്ട്‌വയ്പ്" },
+          February: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          March: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          April: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          May: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          June: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          July: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          August: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          November: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          December: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+        },
+
+        Tur: {
+          January: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          February: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          March: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          April: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          May: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          June: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          July: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          August: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          November: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          December: { en: "Vegetative Growth", ml: "വളർച്ച" },
+        },
+
+        Moong: {
+          January: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          February: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          March: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          April: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          May: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          June: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          July: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          August: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          November: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          December: { en: "Vegetative Growth", ml: "വളർച്ച" },
+        },
+
+        Cowpea: {
+          January: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          February: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          March: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          April: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          May: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          June: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          July: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          August: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          November: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          December: { en: "Vegetative Growth", ml: "വളർച്ച" },
+        },
+
+        // Vegetables
+        Tomato: {
+          January: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          February: { en: "Seedling", ml: "തൈ" },
+          March: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          April: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          May: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          June: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          July: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          August: { en: "Seedling", ml: "തൈ" },
+          September: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          October: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          November: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          December: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+        },
+
+        Brinjal: {
+          January: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          February: { en: "Seedling", ml: "തൈ" },
+          March: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          April: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          May: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          June: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          July: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          August: { en: "Seedling", ml: "തൈ" },
+          September: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          October: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          November: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          December: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+        },
+
+        Beans: {
+          January: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          February: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          March: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          April: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          May: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          June: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          July: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          August: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          November: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          December: { en: "Vegetative Growth", ml: "വളർച്ച" },
+        },
+
+        Okra: {
+          January: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          February: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          March: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          April: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          May: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          June: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          July: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          August: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          November: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          December: { en: "Vegetative Growth", ml: "വളർച്ച" },
+        },
+
+        Chilli: {
+          January: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          February: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          March: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          April: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          May: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          June: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          July: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          August: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          November: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          December: { en: "Vegetative Growth", ml: "വളർച്ച" },
+        },
+
+        Pumpkin: {
+          January: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          February: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          March: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          April: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          May: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          June: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          July: { en: "Vegetative Growth", ml: "വളർച്ച" },
+          August: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          November: { en: "Sowing", ml: "വിതയ്‌ക്കൽ" },
+          December: { en: "Vegetative Growth", ml: "വളർച്ച" },
+        },
+
+        // Flowers
+        Jasmine: {
+          January: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          February: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          March: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          April: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          May: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          June: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          July: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          August: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          November: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          December: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+        },
+
+        Hibiscus: {
+          January: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          February: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          March: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          April: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          May: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          June: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          July: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          August: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          September: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+          October: { en: "Off-season", ml: "ഓഫ്-സീസൺ" },
+          November: { en: "Flowering", ml: "പുഷ്പിക്കൽ" },
+          December: { en: "Harvesting", ml: "അറവെടുപ്പ്" },
+        },
+      };
+
+      const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      let currentLang = "en";
+
+      const translations = {
+        en: {
+          title: "Crop Calendar",
+          crop: "Crop",
+          months: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
+          crops: {
+            Maize: "Maize",
+            Sugarcane: "Sugarcane",
+            Cotton: "Cotton",
+            Paddy: "Paddy",
+            Barley: "Barley",
+            Tobacco: "Tobacco",
+            Rubber: "Rubber",
+            Tea: "Tea",
+            Coffee: "Coffee",
+            Coconut: "Coconut",
+            Banana: "Banana",
+            Mango: "Mango",
+            Jackfruit: "Jackfruit",
+            Pineapple: "Pineapple",
+            Papaya: "Papaya",
+            Guava: "Guava",
+            Pepper: "Pepper",
+            Cardamom: "Cardamom",
+            Cloves: "Cloves",
+            Nutmeg: "Nutmeg",
+            Ginger: "Ginger",
+            Tur: "Tur",
+            Moong: "Moong",
+            Cowpea: "Cowpea",
+            Tomato: "Tomato",
+            Brinjal: "Brinjal",
+            Beans: "Beans",
+            Okra: "Okra",
+            Chilli: "Chilli",
+            Pumpkin: "Pumpkin",
+            Jasmine: "Jasmine",
+            Hibiscus: "Hibiscus",
+          },
+        },
+        ml: {
+          title: "ഫസൽ കലണ്ടർ",
+          crop: "ഫസൽ",
+          months: [
+            "ജനുവരി",
+            "ഫെബ്രുവരി",
+            "മാർച്ച്",
+            "ഏപ്രിൽ",
+            "മേയ്",
+            "ജൂൺ",
+            "ജൂലൈ",
+            "ഓഗസ്റ്റ്",
+            "സെപ്റ്റംബർ",
+            "ഒക്ടോബർ",
+            "നവംബർ",
+            "ഡിസംബർ",
+          ],
+          crops: {
+            Maize: "മക്ക",
+            Sugarcane: "ശർക്കരക്കിഴങ്ങ്",
+            Cotton: "പരിപ്പ്",
+            Paddy: "നാറ്റ് ചോറ്",
+            Barley: "ബാർലി",
+            Tobacco: "പുകയില",
+            Rubber: "റബർ",
+            Tea: "ചായ",
+            Coffee: "കാപ്പി",
+            Coconut: "തേങ്ങ",
+            Banana: "വാഴ",
+            Mango: "മാങ്ങ",
+            Jackfruit: "ചക്ക",
+            Pineapple: "അനാസ്പരം",
+            Papaya: "പപ്പായ",
+            Guava: "പേറ",
+            Pepper: "കുരുമുളക്",
+            Cardamom: "എലക്ക",
+            Cloves: "ഗ്രാമ്പൂട്ട്",
+            Nutmeg: "ജാതിക്ക",
+            Ginger: "ഇഞ്ചി",
+            Tur: "പയർ",
+            Moong: "പച്ചമുളക്",
+            Cowpea: "അരിക്ക",
+            Tomato: "തക്കാളി",
+            Brinjal: "വഴുതന",
+            Beans: "പയർ",
+            Okra: "വെണ്ട",
+            Chilli: "മുളക്",
+            Pumpkin: "പംപ്കിൻ",
+            Jasmine: "മല്ലി",
+            Hibiscus: "ചെമ്പുല",
+          },
+        },
+      };
+
+      function toggleLanguage() {
+        // மொழி மாற்றம்
+        currentLang = currentLang === "en" ? "ml" : "en";
+
+        // Main heading update
+        document.querySelector("h2").childNodes[0].textContent =
+          translations[currentLang].title + " ";
+
+        // Table header update
+        const ths = document.querySelectorAll("#calendar-table th");
+        ths[0].textContent = translations[currentLang].crop;
+        translations[currentLang].months.forEach((month, index) => {
+          ths[index + 1].textContent = month;
+        });
+
+        // புதிய மொழியுடன் table முழுவதையும் மீண்டும் வரைய
+        renderTable();
+      }
+
+      function renderTable() {
+        const tbody = document.querySelector("#calendar-table tbody");
+        tbody.innerHTML = "";
+
+        for (let crop in data) {
+          const tr = document.createElement("tr");
+
+          // crop பெயர் மொழிபெயர்ப்பு
+          const tdCrop = document.createElement("td");
+          tdCrop.textContent = translations[currentLang].crops[crop] || crop;
+          tr.appendChild(tdCrop);
+
+          // மாதங்கள்
+          months.forEach((month) => {
+            const td = document.createElement("td");
+            const phase = data[crop][month][currentLang];
+            td.textContent = phase;
+
+            const activityEn = data[crop][month].en;
+
+            if (/Sowing|Planting/.test(activityEn)) td.className = "Sowing";
+            else if (/Vegetative Growth|Seedling|Nursery/.test(activityEn))
+              td.className = "Vegetative";
+            else if (/Flowering|Topping/.test(activityEn))
+              td.className = "Flowering";
+            else if (/Harvesting|Curing/.test(activityEn))
+              td.className = "Harvesting";
+            else if (/Off-season/.test(activityEn)) td.className = "Off-season";
+            else if (/Post-harvest|Ratoon/.test(activityEn))
+              td.className = "Post-harvest";
+
+            tr.appendChild(td);
+          });
+
+          tbody.appendChild(tr);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const ths = document.querySelectorAll("#calendar-table th");
+        ths[0].textContent = translations.en.crop;
+        translations.en.months.forEach((month, index) => {
+          ths[index + 1].textContent = month;
+        });
+        renderTable();
+      });
+    </script>
+  </body>
+</html>
