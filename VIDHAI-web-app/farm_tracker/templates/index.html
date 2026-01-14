@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Farm Activity Tracker</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      /* ✅ Flask render செய்யும்போது url_for() resolve ஆகும்.
+       ✅ Live Server render செய்யும்போது fallback path வேலை செய்யும். */
+      background-image: url("{{ url_for('static', filename='activity.jpg') }}"),
+        url("../static/activity.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-color: transparent !important;
+    }
+  </style>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a
+        class="navbar-brand"
+        href="#"
+        style="padding-left: 40px"
+        style="width: 900px; font-family: 'Times New Roman', Times, serif"
+        >VIDHAI🌱</a
+      >
+    </nav>
+
+    <!-- <div class="container mt-4">
+      <h2 style="padding-left: 500px">Activity Tracker</h2>
+
+      <div class="mb-3">
+        <label>Language:</label><br /><br />
+        <select id="language" class="form-control mb-2">
+          <option value="en-US">English</option>
+          <option value="ml-IN">Malayalam</option>
+        </select>
+      </div>
+
+      <input
+        type="text"
+        id="farmer_id"
+        class="form-control mb-2"
+        placeholder="Farmer ID"
+      />
+      <input
+        type="text"
+        id="crop_name"
+        class="form-control mb-2"
+        placeholder="Crop Name"
+      />
+      <input
+        type="text"
+        id="activity_type"
+        class="form-control mb-2"
+        placeholder="Activity Type"
+      />
+      <input
+        type="text"
+        id="description"
+        class="form-control mb-2"
+        placeholder="Description"
+      />
+      <input type="date" id="date" class="form-control mb-2" />
+
+      <button id="voiceBtn" class="btn btn-primary w-100 mb-2">
+        🎤 Start Voice Input
+      </button>
+      <button id="submitBtn" class="btn btn-success w-100">
+        Submit Activity
+      </button>
+
+      <ul id="activitiesList" class="list-group mt-3"></ul>
+    </div> -->
+
+    <!-- <div class="container d-flex justify-content-center mt-5">
+      <div
+        class="card p-4 shadow"
+        style="
+          width: 500px;
+          background-color: rgba(255, 255, 255, 0.9);
+          border-radius: 15px;
+        "
+      >
+        <h2 class="text-center mb-4">Activity Tracker</h2>
+
+        <div class="mb-3">
+          <label>Language:</label><br /><br />
+          <select id="language" class="form-control mb-2">
+            <option value="en-US">English</option>
+            <option value="ml-IN">Malayalam</option>
+          </select>
+        </div>
+
+        <input
+          type="text"
+          id="farmer_id"
+          class="form-control mb-2"
+          placeholder="Farmer ID"
+        />
+        <input
+          type="text"
+          id="crop_name"
+          class="form-control mb-2"
+          placeholder="Crop Name"
+        />
+        <input
+          type="text"
+          id="activity_type"
+          class="form-control mb-2"
+          placeholder="Activity Type"
+        />
+        <input
+          type="text"
+          id="description"
+          class="form-control mb-2"
+          placeholder="Description"
+        />
+        <input type="date" id="date" class="form-control mb-2" />
+
+        <button id="voiceBtn" class="btn btn-primary w-100 mb-2">
+          🎤 Start Voice Input
+        </button>
+        <button id="submitBtn" class="btn btn-success w-100">
+          Submit Activity
+        </button>
+
+        <ul id="activitiesList" class="list-group mt-3"></ul>
+      </div>
+    </div> -->
+
+    <div class="container d-flex justify-content-center mt-5">
+      <div
+        class="card p-5 shadow"
+        style="
+          width: 600px;
+          background-color: rgba(255, 255, 255, 0.95);
+          border-radius: 20px;
+        "
+      >
+        <h2 class="text-center mb-4" style="font-size: 28px">
+          Activity Tracker
+        </h2>
+
+        <div class="mb-3">
+          <label style="font-size: 16px">Language:</label><br /><br />
+          <select
+            id="language"
+            class="form-control mb-3"
+            style="font-size: 16px; padding: 12px"
+          >
+            <option value="en-US">English</option>
+            <option value="ml-IN">Malayalam</option>
+          </select>
+        </div>
+
+        <input
+          type="text"
+          id="farmer_id"
+          class="form-control mb-3"
+          placeholder="Farmer ID"
+          style="font-size: 16px; padding: 12px"
+        />
+        <input
+          type="text"
+          id="crop_name"
+          class="form-control mb-3"
+          placeholder="Crop Name"
+          style="font-size: 16px; padding: 12px"
+        />
+        <input
+          type="text"
+          id="activity_type"
+          class="form-control mb-3"
+          placeholder="Activity Type"
+          style="font-size: 16px; padding: 12px"
+        />
+        <input
+          type="text"
+          id="description"
+          class="form-control mb-3"
+          placeholder="Description"
+          style="font-size: 16px; padding: 12px"
+        />
+        <input
+          type="date"
+          id="date"
+          class="form-control mb-3"
+          style="font-size: 16px; padding: 12px"
+        />
+
+        <button
+          id="voiceBtn"
+          class="btn btn-primary w-100 mb-3"
+          style="font-size: 16px; padding: 12px"
+        >
+          🎤 Start Voice Input
+        </button>
+        <button
+          id="submitBtn"
+          class="btn btn-success w-100"
+          style="font-size: 16px; padding: 12px"
+        >
+          Submit Activity
+        </button>
+
+        <ul
+          id="activitiesList"
+          class="list-group mt-3"
+          style="font-size: 16px"
+        ></ul>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // ✅ Add this at the very top
+        const API = "http://127.0.0.1:5000";
+
+        const farmerInput = document.getElementById("farmer_id");
+        const cropInput = document.getElementById("crop_name");
+        const activityInput = document.getElementById("activity_type");
+        const descInput = document.getElementById("description");
+        const dateInput = document.getElementById("date");
+        const activitiesList = document.getElementById("activitiesList");
+        const languageSelect = document.getElementById("language");
+
+        const malActivityMap = {
+          നട്ടല്‍: "Sowing",
+          നട്ടൽ: "Sowing",
+          ജലസേചനം: "Irrigation",
+          പൂർത്തീകരണം: "Fertilizer",
+          പെസ്റ്റ്: "Pest Issue",
+        };
+
+        const promptsEn = [
+          "Please say your farmer ID",
+          "Please say the crop name",
+          "Please say the activity type",
+          "Please describe the activity",
+          "Please say the date or skip for today",
+        ];
+
+        const promptsMl = [
+          "ദയവായി നിങ്ങളുടെ കര്‍ഷകന്‍റെ ഐഡി പറയുക",
+          "ഫലഹാരത്തിന്റെ പേര് പറയുക",
+          "പ്രവർത്തന തരം പറയുക",
+          "പ്രവർത്തനം വിശദീകരിക്കുക",
+          "തിയതി പറയുക അല്ലെങ്കിൽ ഇന്ന് ആയി ഒഴിവാക്കുക",
+        ];
+
+        let step = 0;
+        let recognition;
+
+        function speak(msg, lang = "en-US") {
+          const utter = new SpeechSynthesisUtterance(msg);
+          utter.lang = lang;
+          window.speechSynthesis.speak(utter);
+        }
+
+        function parseVoiceDate(text) {
+          const d = new Date(text);
+          return isNaN(d) ? new Date() : d;
+        }
+
+        function startVoiceSequence() {
+          if (
+            !(
+              "webkitSpeechRecognition" in window ||
+              "SpeechRecognition" in window
+            )
+          ) {
+            alert("Voice recognition not supported. Use Chrome or Edge.");
+            return;
+          }
+
+          step = 0;
+          const lang = languageSelect.value;
+          const prompts = lang === "ml-IN" ? promptsMl : promptsEn;
+
+          recognition = new (window.SpeechRecognition ||
+            window.webkitSpeechRecognition)();
+          recognition.lang = lang;
+          recognition.interimResults = false;
+          recognition.maxAlternatives = 1;
+          recognition.continuous = false;
+
+          recognition.onresult = (event) => {
+            let text = event.results[0][0].transcript.trim();
+
+            if (lang === "ml-IN" && step === 2) {
+              const lower = text.toLowerCase();
+              for (const key in malActivityMap) {
+                if (lower.includes(key)) text = malActivityMap[key];
+              }
+            }
+
+            switch (step) {
+              case 0:
+                farmerInput.value = text;
+                break;
+              case 1:
+                cropInput.value = text;
+                break;
+              case 2:
+                activityInput.value = text;
+                break;
+              case 3:
+                descInput.value = text;
+                break;
+              case 4:
+                dateInput.value = parseVoiceDate(text)
+                  .toISOString()
+                  .split("T")[0];
+                break;
+            }
+
+            step++;
+            if (step < prompts.length) {
+              speak(prompts[step], lang);
+              setTimeout(() => recognition.start(), 800);
+            } else {
+              submitActivity();
+              step = 0;
+            }
+          };
+
+          recognition.onerror = (event) => {
+            console.error("Recognition error:", event.error);
+            alert("Recognition error: " + event.error);
+          };
+
+          speak(prompts[step], lang);
+          setTimeout(() => recognition.start(), 800);
+        }
+
+        document.getElementById("voiceBtn").onclick = startVoiceSequence;
+        document.getElementById("submitBtn").onclick = submitActivity;
+
+        async function submitActivity() {
+          if (!farmerInput.value || !cropInput.value || !activityInput.value) {
+            alert("Farmer ID, Crop Name, and Activity Type are required!");
+            return;
+          }
+
+          const data = {
+            farmer_id: farmerInput.value,
+            crop_name: cropInput.value,
+            activity_type: activityInput.value,
+            description: descInput.value,
+            date: dateInput.value || new Date().toISOString().split("T")[0],
+          };
+
+          try {
+            const res = await fetch(`${API}/activities`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data),
+            });
+
+            if (res.ok) {
+              await res.json();
+              loadActivities();
+              clearForm();
+            } else {
+              alert("Failed to log activity: " + res.status);
+            }
+          } catch (err) {
+            console.error(err);
+            alert(err.message);
+          }
+        }
+
+        async function loadActivities() {
+          if (!farmerInput.value) return;
+          try {
+            const res = await fetch(`${API}/activities/${farmerInput.value}`);
+
+            if (res.ok) {
+              const data = await res.json();
+              activitiesList.innerHTML = "";
+              data.forEach((act) => {
+                const li = document.createElement("li");
+                li.className = "list-group-item";
+                li.textContent = `${act.date} - ${act.activity_type} [ ${act.description} ](${act.crop_name})`;
+                activitiesList.appendChild(li);
+              });
+            }
+          } catch (err) {
+            console.error(err);
+          }
+        }
+
+        function clearForm() {
+          cropInput.value = "";
+          activityInput.value = "";
+          descInput.value = "";
+          dateInput.value = "";
+        }
+      });
+    </script>
+  </body>
+</html>

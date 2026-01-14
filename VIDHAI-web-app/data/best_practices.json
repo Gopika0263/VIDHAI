@@ -1,0 +1,26 @@
+{
+  "Maize": {
+    "en": "Use drip irrigation to save water, apply mulch to retain soil moisture, and avoid water logging.",
+    "ml": "ജലം സംരക്ഷിക്കാൻ ഡ്രിപ്പ് ഇരിഗേഷൻ ഉപയോഗിക്കുക, മണ്ണിലെ ഈർപ്പം നിലനിർത്താൻ മൾച്ച് പ്രയോഗിക്കുക, വെള്ളക്കെട്ട് ഒഴിവാക്കുക."
+  },
+  "Sugarcane": {
+    "en": "Ensure regular irrigation, ratoon management, and apply organic manure before planting.",
+    "ml": "നിയമിതമായി ജലസേചനം ഉറപ്പാക്കുക, റാറ്റൂൺ മാനേജ്മെന്റ് നടത്തുക, നടുന്നതിന് മുമ്പ് ജൈവ വളം പ്രയോഗിക്കുക."
+  },
+  "Cotton": {
+    "en": "Adopt crop rotation with pulses, use Bt cotton varieties, and avoid excess nitrogen.",
+    "ml": "പയർവർഗങ്ങളുമായി വിള പരിവർത്തനം ചെയ്യുക, ബി.ടി. പരുത്തി ഇനങ്ങൾ ഉപയോഗിക്കുക, അമിത നൈട്രജൻ ഒഴിവാക്കുക."
+  },
+  "Paddy": {
+    "en": "Maintain 5 cm standing water, use organic manure along with balanced NPK, and practice SRI method.",
+    "ml": "5 സെ.മീ. വെള്ളം നിലനിർത്തുക, എൻ.പി.കെ. ബാലൻസിനൊപ്പം ജൈവ വളം ഉപയോഗിക്കുക, എസ്.ആർ.ഐ. രീതി പ്രയോഗിക്കുക."
+  },
+  "Barley": {
+    "en": "Sow seeds in well-drained loamy soils, avoid late sowing, and use integrated pest management.",
+    "ml": "നന്നായി വെള്ളം ഒഴുകുന്ന ലോമി മണ്ണിൽ വിത്തുകൾ വിതയ്‌ക്കുക, വൈകി വിതയ്‌ക്കുന്നത് ഒഴിവാക്കുക, സംയോജിത കീടനാശിനി മാനേജ്മെന്റ് ഉപയോഗിക്കുക."
+  },
+  "Tobacco": {
+    "en": "Ensure proper curing, maintain soil fertility with organic compost, and use crop rotation to reduce disease.",
+    "ml": "ശരിയായ ക്യൂറിംഗ് ഉറപ്പാക്കുക, ജൈവ കമ്പോസ്റ്റോടെ മണ്ണിന്റെ ഫലഭൂയിഷ്ഠ്യം നിലനിർത്തുക, രോഗം കുറയ്ക്കാൻ വിള പരിവർത്തനം ചെയ്യുക."
+  }
+}
