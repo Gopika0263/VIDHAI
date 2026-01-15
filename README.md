@@ -17,15 +17,15 @@
 
 ```
 ## How to Run
-```bash
+
 git clone https://github.com/Gopika0263/VIDHAI.git
 cd VIDHAI
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
 python app.py
-```
-Team Members
+
+**Team Members**
 
 Kaaviya S(Team Leader):
 
@@ -38,5 +38,7 @@ Member 4 : Kanishka
 Member 5 : Saranya 
 
 Member 6 : Rubeha
+
+
 ---
 
