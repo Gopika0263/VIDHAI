@@ -1,6 +1,0 @@
-Flask
-flask-pymongo
-apscheduler
-plyer
-python-dotenv
-requests
