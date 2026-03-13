@@ -1,4 +1,0 @@
-# Flask
-# pywebpush
-Flask
-Flask-Cors
